@@ -1,2 +1,1 @@
-09-20-2021 00:30
-Starting with a draft design on my notebook regarding some parts of the domain model / JSON schema. 
+Starting with a [draft design](https://github.com/danilo-ambrosio/minesweeper/blob/master/assets/%5Bdraft%5Dinitial-model.jpg) on my notebook regarding some parts of the domain model / JSON schema. (10 min)
