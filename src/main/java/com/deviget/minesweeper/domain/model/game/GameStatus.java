@@ -5,10 +5,11 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package com.deviget.minesweeper.domain.model;
+package com.deviget.minesweeper.domain.model.game;
 
 public enum GameStatus {
   NEW,
+  ONGOING,
   PAUSED,
   WON,
   LOST

@@ -1,4 +1,4 @@
-package com.deviget.minesweeper.domain.model;
+package com.deviget.minesweeper.domain.model.game;
 
 public enum CellType {
   EMPTY,

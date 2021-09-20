@@ -3,3 +3,5 @@
 - Adding default Spring structure + entity state + value objects (2h)
 
 - Cell subclasses (20m)
+
+- Package rename + game model refinement (2h) + game configuration + tests (1h)
