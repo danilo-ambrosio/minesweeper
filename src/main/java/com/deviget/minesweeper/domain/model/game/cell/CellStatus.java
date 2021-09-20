@@ -1,4 +1,4 @@
-package com.deviget.minesweeper.domain.model.game;
+package com.deviget.minesweeper.domain.model.game.cell;
 
 public enum CellStatus {
   COVERED,

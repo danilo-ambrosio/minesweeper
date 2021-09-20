@@ -44,4 +44,7 @@ public class Preferences {
     return numberOfMines;
   }
 
+  public BoardSize boardSize() {
+    return new BoardSize(rows, columns);
+  }
 }

@@ -5,3 +5,5 @@
 - Cell subclasses (20m)
 
 - Package rename + game model refinement (2h) + game configuration + tests (1h)
+
+- Uncovering cells (partial) + Mines placement + Cell navigation + tests (3h)  
