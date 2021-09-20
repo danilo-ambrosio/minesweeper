@@ -35,7 +35,6 @@ public class Game {
   }
 
   public void uncoverCell(final CellCoordinate cellCoordinate) {
-    timestamp();
     if(isNew()) {
       this.status = GameStatus.ONGOING;
       this.board.placeMines(randomizeMineCoordinates(cellCoordinate));
@@ -45,6 +44,7 @@ public class Game {
     } else if(this.board.hasOnlyCoveredMineCells()) {
       this.status = GameStatus.WON;
     }
+    updateTimestamp();
   }
 
   private Set<CellCoordinate> randomizeMineCoordinates(final CellCoordinate ignoredCoordinate) {
@@ -62,7 +62,7 @@ public class Game {
     return mineCoordinates;
   }
 
-  private void timestamp() {
+  private void updateTimestamp() {
     this.updatedOn = Instant.now().toEpochMilli();
   }
 
