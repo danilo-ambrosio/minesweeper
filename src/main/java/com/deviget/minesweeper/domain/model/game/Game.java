@@ -52,7 +52,7 @@ public class Game {
 
     while(mineCoordinates.size() < preferences.numberOfMines()) {
       final CellCoordinate randomCoordinate =
-              CellCoordinate.random(preferences.rows(), preferences.columns());
+              CellCoordinate.random(preferences.boardSize());
 
       if(!ignoredCoordinate.equals(randomCoordinate)) {
         mineCoordinates.add(randomCoordinate);
