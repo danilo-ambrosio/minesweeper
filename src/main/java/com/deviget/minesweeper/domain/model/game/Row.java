@@ -26,25 +26,24 @@ public class Row {
   }
 
   public void placeMine(final int cellIndex) {
-    replaceCell(Cell.mineAt(cellIndex));
+    final Cell existingCell = cellAt(cellIndex);
+    final Cell mine = Cell.mineAt(cellIndex, existingCell.status());
+    updateCell(mine);
   }
 
-  public void incrementMineAlert(final int cellIndex) {
-    replaceCell(cellAt(cellIndex).incrementMine());
+  public void placeFlag(CellCoordinate cellCoordinate) {
+    final Cell cell = cellAt(cellCoordinate.cellIndex());
+    updateCell(cell.placeFlag());
   }
 
-  private void replaceCell(final Cell cell) {
-    this.cells.remove(cell);
-    this.cells.add(cell);
+  public void placeQuestionMark(final CellCoordinate cellCoordinate) {
+    final Cell cell = cellAt(cellCoordinate.cellIndex());
+    updateCell(cell.placeQuestionMark());
   }
 
-  public Set<Cell> cells() {
-    return Collections.unmodifiableSet(cells);
-  }
-
-  Cell cellAt(final int cellIndex) {
-    return cells.stream().filter(c -> c.matchIndex(cellIndex)).findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Unable to find cell with index " + cellIndex));
+  public void incrementMineAlert(final CellCoordinate cellCoordinate) {
+    final Cell cell = cellAt(cellCoordinate.cellIndex());
+    updateCell(cell.incrementMine());
   }
 
   public Cell uncoverCell(final Board board,
@@ -53,7 +52,7 @@ public class Row {
     final Cell uncoveredCell =
             cellAt(cellCoordinate.cellIndex()).uncover(uncoveringType);
 
-    replaceCell(uncoveredCell);
+    updateCell(uncoveredCell);
 
     if(uncoveredCell.shouldPropagateUncovering()) {
       AdjacentCellCoordinates.resolve(board.size(), cellCoordinate).forEach(adjacentCoordinate -> {
@@ -66,6 +65,20 @@ public class Row {
 
   boolean isCellUncovered(final CellCoordinate cellCoordinate) {
     return cellAt(cellCoordinate.cellIndex()).isUncovered();
+  }
+
+  Cell cellAt(final int cellIndex) {
+    return cells.stream().filter(c -> c.matchIndex(cellIndex)).findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Unable to find cell with index " + cellIndex));
+  }
+
+  private void updateCell(final Cell cell) {
+    this.cells.remove(cell);
+    this.cells.add(cell);
+  }
+
+  public Set<Cell> cells() {
+    return Collections.unmodifiableSet(cells);
   }
 
   public int index() {

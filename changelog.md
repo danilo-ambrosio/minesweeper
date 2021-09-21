@@ -11,3 +11,5 @@
 - Completing the uncovering logic + tests (2h)
 
 - Game Resume (20m)
+
+- Cell marks + tests (1h)

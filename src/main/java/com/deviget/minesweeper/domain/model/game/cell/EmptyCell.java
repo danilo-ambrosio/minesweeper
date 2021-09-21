@@ -21,7 +21,17 @@ public class EmptyCell extends Cell {
 
   @Override
   public Cell incrementMine() {
-    return Cell.mineAlertAt(index());
+    return Cell.mineAlertAt(index(), status());
+  }
+
+  @Override
+  public Cell placeQuestionMark() {
+    return new EmptyCell(index(), CellStatus.QUESTION_MARKED);
+  }
+
+  @Override
+  public Cell placeFlag() {
+    return new EmptyCell(index(), CellStatus.FLAGGED);
   }
 
   @Override

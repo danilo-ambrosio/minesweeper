@@ -45,7 +45,7 @@ public class Game {
     final Cell uncoveredCell =
             this.board.uncoverCell(cellCoordinate, UncoveringType.USER_REQUEST);
 
-    if(!this.board.hasUncoverableCells()) {
+    if(!this.board.hasCellsToBeUncovered()) {
       this.status = GameStatus.WON;
     }
 
@@ -53,7 +53,17 @@ public class Game {
       this.status = GameStatus.LOST;
     }
 
-    updateTimestamp();
+    this.updateTimestamp();
+  }
+
+  public void placeQuestionMark(final CellCoordinate cellCoordinate) {
+    this.board.placeQuestionMark(cellCoordinate);
+    this.updateTimestamp();
+  }
+
+  public void placeFlag(final CellCoordinate cellCoordinate) {
+    this.board.placeFlag(cellCoordinate);
+    this.updateTimestamp();
   }
 
   public void resume() {
@@ -103,7 +113,7 @@ public class Game {
     return updatedOn;
   }
 
-  boolean isNew() {
+  private boolean isNew() {
     return this.status.equals(GameStatus.NEW);
   }
 

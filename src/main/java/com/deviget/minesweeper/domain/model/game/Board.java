@@ -46,16 +46,32 @@ public class Board {
     return row.uncoverCell(this, cellCoordinate, userRequest);
   }
 
+  void placeQuestionMark(final CellCoordinate cellCoordinate) {
+    final Row row = rowAt(cellCoordinate.rowIndex());
+    final Cell cell = row.cellAt(cellCoordinate.cellIndex());
+    if(cell.isCovered()) {
+      row.placeQuestionMark(cellCoordinate);
+    }
+  }
+
+  void placeFlag(final CellCoordinate cellCoordinate) {
+    final Row row = rowAt(cellCoordinate.rowIndex());
+    final Cell cell = row.cellAt(cellCoordinate.cellIndex());
+    if(cell.isCovered()) {
+      row.placeFlag(cellCoordinate);
+    }
+  }
+
   private void incrementMineAlert(final CellCoordinate cellCoordinate) {
     final Row row = rowAt(cellCoordinate.rowIndex());
-    row.incrementMineAlert(cellCoordinate.cellIndex());
+    row.incrementMineAlert(cellCoordinate);
   }
 
   public BoardSize size() {
     return boardSize;
   }
 
-  boolean hasUncoverableCells() {
+  boolean hasCellsToBeUncovered() {
     return rows.stream().flatMap(row -> row.cells().stream()).anyMatch(cell -> cell.isCovered() && !cell.isMine());
   }
 
@@ -66,5 +82,4 @@ public class Board {
   List<Row> rows() {
     return Collections.unmodifiableList(rows);
   }
-
 }

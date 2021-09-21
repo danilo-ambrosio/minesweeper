@@ -4,15 +4,15 @@ public class MineAlertCell extends Cell {
 
   private final int mines;
 
-  public static MineAlertCell at(final int index) {
-    return at(index, 1);
+  public static MineAlertCell at(final int index, final CellStatus status) {
+    return at(index, 1, status);
   }
 
-  private static MineAlertCell at(final int index, final int mines) {
-    return new MineAlertCell(index, mines, CellStatus.COVERED);
+  public static MineAlertCell at(final int index, final int mines, final CellStatus status) {
+    return new MineAlertCell(index, mines, status);
   }
 
-  protected MineAlertCell(final int index, final int mines, final CellStatus cellStatus) {
+  private MineAlertCell(final int index, final int mines, final CellStatus cellStatus) {
     super(index, CellType.MINE_ALERT, cellStatus);
     this.mines = mines;
   }
@@ -23,8 +23,18 @@ public class MineAlertCell extends Cell {
   }
 
   @Override
+  public Cell placeQuestionMark() {
+    return new MineAlertCell(index(), mines, CellStatus.QUESTION_MARKED);
+  }
+
+  @Override
+  public Cell placeFlag() {
+    return new MineAlertCell(index(), mines, CellStatus.FLAGGED);
+  }
+
+  @Override
   public Cell incrementMine() {
-    return at(index(), mines + 1);
+    return at(index(), mines + 1, status());
   }
 
   @Override

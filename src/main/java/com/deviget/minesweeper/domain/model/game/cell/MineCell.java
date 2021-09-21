@@ -2,12 +2,8 @@ package com.deviget.minesweeper.domain.model.game.cell;
 
 public class MineCell extends Cell {
 
-  public static final MineCell at(final int index) {
-    return new MineCell(index);
-  }
-
-  private MineCell(final int index) {
-    this(index, CellStatus.COVERED);
+  public static final MineCell at(final int index, CellStatus status) {
+    return new MineCell(index, status);
   }
 
   private MineCell(final int index, final CellStatus status) {
@@ -25,6 +21,16 @@ public class MineCell extends Cell {
       return this;
     }
     return new MineCell(index(), CellStatus.UNCOVERED);
+  }
+
+  @Override
+  public Cell placeQuestionMark() {
+    return new MineCell(index(), CellStatus.QUESTION_MARKED);
+  }
+
+  @Override
+  public Cell placeFlag() {
+    return new MineCell(index(), CellStatus.FLAGGED);
   }
 
   @Override

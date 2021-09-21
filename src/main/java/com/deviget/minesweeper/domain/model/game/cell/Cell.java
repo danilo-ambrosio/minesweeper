@@ -8,12 +8,12 @@ public abstract class Cell implements Comparable<Cell> {
   private final CellType type;
   private final CellStatus status;
 
-  public static Cell mineAt(final int index) {
-    return MineCell.at(index);
+  public static Cell mineAt(final int index, final CellStatus status) {
+    return MineCell.at(index, status);
   }
 
-  public static Cell mineAlertAt(final int index) {
-    return MineAlertCell.at(index);
+  public static Cell mineAlertAt(final int index, final CellStatus status) {
+    return MineAlertCell.at(index, status);
   }
 
   public static Cell emptyAt(final int index) {
@@ -45,6 +45,10 @@ public abstract class Cell implements Comparable<Cell> {
   public abstract Cell uncover(UncoveringType uncoveringType);
 
   public abstract Cell incrementMine();
+
+  public abstract Cell placeQuestionMark();
+
+  public abstract Cell placeFlag();
 
   public boolean isMine() {
     return false;

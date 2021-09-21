@@ -39,6 +39,26 @@ public class GameTest {
   }
 
   @Test
+  public void testThatQuestionMarkIsPlaced() {
+    final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
+    game.placeFlag(CellCoordinate.with(1, 1));
+    game.placeQuestionMark(CellCoordinate.with(2, 2));
+    game.uncoverCell(CellCoordinate.with(0, 5));
+    game.placeFlag(CellCoordinate.with(0, 5));
+    game.placeQuestionMark(CellCoordinate.with(0, 5));
+    game.placeFlag(CellCoordinate.with(3, 4));
+    game.placeQuestionMark(CellCoordinate.with(3, 3));
+
+    final List<Row> rows = game.rows();
+
+    Assertions.assertEquals(CellStatus.UNCOVERED, rows.get(0).cellAt(5).status());
+    Assertions.assertEquals(CellStatus.FLAGGED, rows.get(1).cellAt(1).status());
+    Assertions.assertEquals(CellStatus.QUESTION_MARKED, rows.get(2).cellAt(2).status());
+    Assertions.assertEquals(CellStatus.QUESTION_MARKED, rows.get(3).cellAt(3).status());
+    Assertions.assertEquals(CellStatus.FLAGGED, rows.get(3).cellAt(4).status());
+  }
+
+  @Test
   public void testThatCellIsUncoveredWhenGameIsNew() {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
     game.uncoverCell(CellCoordinate.with(2, 3));
@@ -50,8 +70,7 @@ public class GameTest {
 
   @Test
   public void testThatGameStatusIsLost() {
-    final UserId userId = UserId.create();
-    final Game game = Game.configure(Preferences.with(4, 6, 10), userId);
+    final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
     game.uncoverCell(CellCoordinate.with(2, 3));
     game.uncoverCell(findCellCoordinates(game, CellType.MINE).get(0));
     Assertions.assertEquals(GameStatus.LOST, game.status());
@@ -59,8 +78,7 @@ public class GameTest {
 
   @Test
   public void testThatGameStatusIsWon() {
-    final UserId userId = UserId.create();
-    final Game game = Game.configure(Preferences.with(4, 6, 2), userId);
+    final Game game = Game.configure(Preferences.with(4, 6, 2), UserId.create());
     game.uncoverCell(CellCoordinate.with(2, 3));
     findCellCoordinates(game, CellType.EMPTY).forEach(game::uncoverCell);
     findCellCoordinates(game, CellType.MINE_ALERT).forEach(game::uncoverCell);
