@@ -20,13 +20,18 @@ public class EmptyCell extends Cell {
   }
 
   @Override
-  public boolean shouldPropagateUncovering() {
+  public Cell incrementMine() {
+    return Cell.mineAlertAt(index());
+  }
+
+  @Override
+  public boolean isEmpty() {
     return true;
   }
 
   @Override
-  public Cell incrementMine() {
-    return Cell.mineAlertAt(index());
+  public boolean shouldPropagateUncovering() {
+    return true;
   }
 
   @Override

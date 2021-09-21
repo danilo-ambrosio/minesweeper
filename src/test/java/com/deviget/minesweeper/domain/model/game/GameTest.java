@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import static com.deviget.minesweeper.domain.model.game.cell.CellType.EMPTY;
 
@@ -26,17 +25,9 @@ public class GameTest {
     Assertions.assertEquals(userId, game.userId());
     Assertions.assertEquals(GameStatus.NEW, game.status());
     Assertions.assertEquals(game.startedOn(), game.updatedOn());
-
-    final List<Row> rows = game.rows();
-
-    Assertions.assertEquals(4, rows.size());
-    Assertions.assertTrue(rows.stream().allMatch(row -> row.cells().size() == 6));
-
-    final Predicate<Cell> cellsAssertion =
-            cell -> cell.type().equals(EMPTY) &&
-                    cell.status().equals(CellStatus.COVERED);
-
-    Assertions.assertTrue(rows.stream().allMatch(row -> row.cells().stream().allMatch(cellsAssertion)));
+    Assertions.assertEquals(4, game.rows().size());
+    Assertions.assertTrue(game.rows().stream().allMatch(row -> row.cells().size() == 6));
+    Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(cell -> cell.isEmpty() && cell.isCovered()));
   }
 
   @Test
@@ -68,7 +59,7 @@ public class GameTest {
   @Test
   public void testThatGameStatusIsWon() {
     final UserId userId = UserId.create();
-    final Game game = Game.configure(Preferences.with(4, 6, 10), userId);
+    final Game game = Game.configure(Preferences.with(4, 6, 2), userId);
     game.uncoverCell(CellCoordinate.with(2, 3));
     findCellCoordinates(game, CellType.MINE_ALERT).forEach(game::uncoverCell);
     Assertions.assertEquals(GameStatus.ONGOING, game.status());

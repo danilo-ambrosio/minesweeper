@@ -50,6 +50,10 @@ public abstract class Cell implements Comparable<Cell> {
     return false;
   }
 
+  public boolean isEmpty() {
+    return false;
+  }
+
   public boolean isUncovered() {
     return status.equals(CellStatus.UNCOVERED);
   }
