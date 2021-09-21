@@ -54,6 +54,10 @@ public class Game {
     updateTimestamp();
   }
 
+  public void resume() {
+    updateTimestamp();
+  }
+
   private Set<CellCoordinate> resolveMineCoordinates(final CellCoordinate ignoredCoordinate) {
     final Set<CellCoordinate> mineCoordinates = new HashSet<>();
 
@@ -99,10 +103,6 @@ public class Game {
 
   boolean isNew() {
     return this.status.equals(GameStatus.NEW);
-  }
-
-  boolean isOver() {
-    return this.status.equals(GameStatus.WON) || this.status.equals(GameStatus.LOST);
   }
 
 }

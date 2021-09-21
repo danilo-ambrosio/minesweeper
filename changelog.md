@@ -9,3 +9,5 @@
 - Uncovering cells (partial) + Mines placement + Cell navigation + tests (3h) 
 
 - Completing the uncovering logic + tests (2h)
+
+- Game Resume (20m)

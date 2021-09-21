@@ -35,6 +35,9 @@ public class GameTest {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
     wait(200, () -> game.uncoverCell(CellCoordinate.with(2, 3)));
     Assertions.assertTrue(game.startedOn() < game.updatedOn());
+    final long lastUpdate = game.updatedOn();
+    wait(200, () -> game.resume());
+    Assertions.assertTrue(lastUpdate < game.updatedOn());
   }
 
   @Test
