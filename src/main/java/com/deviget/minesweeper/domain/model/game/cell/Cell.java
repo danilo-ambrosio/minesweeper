@@ -4,12 +4,16 @@ import java.util.Objects;
 
 public abstract class Cell implements Comparable<Cell> {
 
-  protected final int index;
+  private final int index;
   private final CellType type;
   private final CellStatus status;
 
-  public static final Cell mineAt(final int index) {
+  public static Cell mineAt(final int index) {
     return MineCell.at(index);
+  }
+
+  public static Cell mineAlertAt(final int index) {
+    return MineAlertCell.at(index);
   }
 
   public static Cell emptyAt(final int index) {
@@ -17,13 +21,13 @@ public abstract class Cell implements Comparable<Cell> {
   }
 
   protected Cell(final int index, final CellType type) {
-    this.index = index;
-    this.type = type;
-    this.status = CellStatus.UNCOVERED;
+    this(index, type, CellStatus.COVERED);
   }
 
-  protected static Cell mineAlertAt(final int index) {
-    return MineAlertCell.at(index);
+  protected Cell(final int index, final CellType type, final CellStatus status) {
+    this.index = index;
+    this.type = type;
+    this.status = status;
   }
 
   public CellType type() {
@@ -38,6 +42,8 @@ public abstract class Cell implements Comparable<Cell> {
     return 0;
   }
 
+  public abstract Cell uncover(UncoveringType uncoveringType);
+
   public abstract Cell incrementMine();
 
   public boolean isMine() {
@@ -48,9 +54,19 @@ public abstract class Cell implements Comparable<Cell> {
     return status.equals(CellStatus.UNCOVERED);
   }
 
+  public boolean isCovered() {
+    return status.equals(CellStatus.COVERED);
+  }
+
   public boolean matchIndex(final int cellIndex) {
     return this.index == cellIndex;
   }
+
+  public int index() {
+    return index;
+  }
+
+  public abstract boolean shouldPropagateUncovering();
 
   @Override
   public boolean equals(final Object other) {

@@ -3,6 +3,7 @@ package com.deviget.minesweeper.domain.model.game;
 import com.deviget.minesweeper.domain.model.game.cell.AdjacentCellCoordinates;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
+import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,17 +33,30 @@ public class Board {
 
   void placeMines(final Set<CellCoordinate> mineCoordinates) {
     mineCoordinates.forEach(mineCoordinate -> {
-      rowAt(mineCoordinate.rowIndex()).placeMine(mineCoordinate.cellIndex());
-      this.incrementAdjacentMineAlert(mineCoordinate);
+      this.rowAt(mineCoordinate.rowIndex()).placeMine(mineCoordinate.cellIndex());
+      AdjacentCellCoordinates.resolve(boardSize, mineCoordinate).forEach(this::incrementMineAlert);
     });
   }
 
-  private void incrementAdjacentMineAlert(final CellCoordinate mineCoordinate) {
-    AdjacentCellCoordinates.resolve(boardSize, mineCoordinate).forEach(this::incrementMineAlert);
+  Cell uncoverCell(final CellCoordinate cellCoordinate, final UncoveringType userRequest) {
+    final Row row = rowAt(cellCoordinate.rowIndex());
+    if(row.isCellUncovered(cellCoordinate)) {
+      return row.cellAt(cellCoordinate.cellIndex());
+    }
+    return row.uncoverCell(this, cellCoordinate, userRequest);
   }
 
   private void incrementMineAlert(final CellCoordinate cellCoordinate) {
-    rowAt(cellCoordinate.rowIndex()).incrementMineAlert(cellCoordinate.cellIndex());
+    final Row row = rowAt(cellCoordinate.rowIndex());
+    row.incrementMineAlert(cellCoordinate.cellIndex());
+  }
+
+  public BoardSize size() {
+    return boardSize;
+  }
+
+  boolean hasUncoverableCells() {
+    return rows.stream().flatMap(row -> row.cells().stream()).anyMatch(cell -> cell.isCovered() && !cell.isMine());
   }
 
   Row rowAt(final int rowIndex) {
@@ -53,11 +67,4 @@ public class Board {
     return Collections.unmodifiableList(rows);
   }
 
-  Cell uncoverCell(final CellCoordinate cellCoordinate) {
-    return Cell.emptyAt(0);
-  }
-
-  boolean hasOnlyCoveredMineCells() {
-    return rows.stream().allMatch(row -> row.cells().stream().allMatch(cell -> !cell.isUncovered() && cell.isMine()));
-  }
 }

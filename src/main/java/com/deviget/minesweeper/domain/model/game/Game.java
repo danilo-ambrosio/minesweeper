@@ -1,7 +1,9 @@
 package com.deviget.minesweeper.domain.model.game;
 
 import com.deviget.minesweeper.domain.model.UserId;
+import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
+import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -37,17 +39,22 @@ public class Game {
   public void uncoverCell(final CellCoordinate cellCoordinate) {
     if(isNew()) {
       this.status = GameStatus.ONGOING;
-      this.board.placeMines(randomizeMineCoordinates(cellCoordinate));
+      this.board.placeMines(resolveMineCoordinates(cellCoordinate));
     }
-    if(this.board.uncoverCell(cellCoordinate).isMine()) {
+
+    final Cell uncoveredCell =
+            this.board.uncoverCell(cellCoordinate, UncoveringType.USER_REQUEST);
+
+    if(uncoveredCell.isMine()) {
       this.status = GameStatus.LOST;
-    } else if(this.board.hasOnlyCoveredMineCells()) {
+    } else if(!this.board.hasUncoverableCells()) {
       this.status = GameStatus.WON;
     }
+
     updateTimestamp();
   }
 
-  private Set<CellCoordinate> randomizeMineCoordinates(final CellCoordinate ignoredCoordinate) {
+  private Set<CellCoordinate> resolveMineCoordinates(final CellCoordinate ignoredCoordinate) {
     final Set<CellCoordinate> mineCoordinates = new HashSet<>();
 
     while(mineCoordinates.size() < preferences.numberOfMines()) {

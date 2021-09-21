@@ -7,12 +7,26 @@ public class EmptyCell extends Cell {
   }
 
   protected EmptyCell(final int index) {
-    super(index, CellType.EMPTY);
+    this(index, CellStatus.COVERED);
+  }
+
+  protected EmptyCell(final int index, final CellStatus cellStatus) {
+    super(index, CellType.EMPTY, cellStatus);
+  }
+
+  @Override
+  public Cell uncover(final UncoveringType uncoveringType) {
+    return new EmptyCell(index(), CellStatus.UNCOVERED);
+  }
+
+  @Override
+  public boolean shouldPropagateUncovering() {
+    return true;
   }
 
   @Override
   public Cell incrementMine() {
-    return Cell.mineAlertAt(this.index);
+    return Cell.mineAlertAt(index());
   }
 
   @Override

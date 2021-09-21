@@ -9,21 +9,32 @@ public class MineAlertCell extends Cell {
   }
 
   private static MineAlertCell at(final int index, final int mines) {
-    return new MineAlertCell(index, mines);
+    return new MineAlertCell(index, mines, CellStatus.COVERED);
   }
 
-  private MineAlertCell(final int index, final int mines) {
-    super(index, CellType.MINE_ALERT);
+  protected MineAlertCell(final int index, final int mines, final CellStatus cellStatus) {
+    super(index, CellType.MINE_ALERT, cellStatus);
     this.mines = mines;
   }
 
-  public int mines() {
-    return mines;
+  @Override
+  public Cell uncover(final UncoveringType uncoveringType) {
+    return new MineAlertCell(index(), mines, CellStatus.UNCOVERED);
   }
 
   @Override
   public Cell incrementMine() {
-    return at(index, mines + 1);
+    return at(index(), mines + 1);
+  }
+
+  @Override
+  public boolean shouldPropagateUncovering() {
+    return false;
+  }
+
+  @Override
+  public int mines() {
+    return mines;
   }
 
   @Override

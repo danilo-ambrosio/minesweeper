@@ -1,6 +1,9 @@
 package com.deviget.minesweeper.domain.model.game;
 
+import com.deviget.minesweeper.domain.model.game.cell.AdjacentCellCoordinates;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
+import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
+import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
 
 import java.util.Collections;
 import java.util.Set;
@@ -42,5 +45,30 @@ public class Row {
   Cell cellAt(final int cellIndex) {
     return cells.stream().filter(c -> c.matchIndex(cellIndex)).findFirst()
             .orElseThrow(() -> new IllegalArgumentException("Unable to find cell with index " + cellIndex));
+  }
+
+  public Cell uncoverCell(final Board board,
+                          final CellCoordinate cellCoordinate,
+                          final UncoveringType uncoveringType) {
+    final Cell uncoveredCell =
+            cellAt(cellCoordinate.cellIndex()).uncover(uncoveringType);
+
+    replaceCell(uncoveredCell);
+
+    if(uncoveredCell.shouldPropagateUncovering()) {
+      AdjacentCellCoordinates.resolve(board.size(), cellCoordinate).forEach(adjacentCoordinate -> {
+        board.uncoverCell(adjacentCoordinate, UncoveringType.PROPAGATION);
+      });
+    }
+
+    return uncoveredCell;
+  }
+
+  boolean isCellUncovered(final CellCoordinate cellCoordinate) {
+    return cellAt(cellCoordinate.cellIndex()).isUncovered();
+  }
+
+  public int index() {
+    return index;
   }
 }

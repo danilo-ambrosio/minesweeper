@@ -6,4 +6,6 @@
 
 - Package rename + game model refinement (2h) + game configuration + tests (1h)
 
-- Uncovering cells (partial) + Mines placement + Cell navigation + tests (3h)  
+- Uncovering cells (partial) + Mines placement + Cell navigation + tests (3h) 
+
+- Completing the uncovering logic + tests (2h)
