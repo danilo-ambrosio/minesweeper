@@ -45,10 +45,12 @@ public class Game {
     final Cell uncoveredCell =
             this.board.uncoverCell(cellCoordinate, UncoveringType.USER_REQUEST);
 
+    if(!this.board.hasUncoverableCells()) {
+      this.status = GameStatus.WON;
+    }
+
     if(uncoveredCell.isMine()) {
       this.status = GameStatus.LOST;
-    } else if(!this.board.hasUncoverableCells()) {
-      this.status = GameStatus.WON;
     }
 
     updateTimestamp();

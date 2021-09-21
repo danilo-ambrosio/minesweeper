@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.deviget.minesweeper.domain.model.game.cell.CellType.EMPTY;
-
 public class GameTest {
 
   @Test
@@ -64,9 +62,8 @@ public class GameTest {
     final UserId userId = UserId.create();
     final Game game = Game.configure(Preferences.with(4, 6, 2), userId);
     game.uncoverCell(CellCoordinate.with(2, 3));
+    findCellCoordinates(game, CellType.EMPTY).forEach(game::uncoverCell);
     findCellCoordinates(game, CellType.MINE_ALERT).forEach(game::uncoverCell);
-    Assertions.assertEquals(GameStatus.ONGOING, game.status());
-    findCellCoordinates(game, EMPTY).forEach(game::uncoverCell);
     Assertions.assertEquals(GameStatus.WON, game.status());
   }
 
