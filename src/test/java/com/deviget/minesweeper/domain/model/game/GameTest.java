@@ -44,7 +44,7 @@ public class GameTest {
     Assertions.assertEquals(GameStatus.ONGOING, game.status());
     Assertions.assertEquals(4, game.rows().size());
     Assertions.assertEquals(10, game.rows().stream().flatMap(row -> row.cells().stream()).filter(Cell::isMine).count());
-    Assertions.assertEquals(CellStatus.UNCOVERED, game.rows().stream().filter(row -> row.index() == 2).map(row -> row.cellAt(3).status()).findFirst().get());
+    Assertions.assertEquals(CellStatus.UNCOVERED, game.rows().get(2).cellAt(3).status());
   }
 
   @Test
@@ -69,11 +69,11 @@ public class GameTest {
 
   private List<CellCoordinate> findCellCoordinates(final Game game, final CellType type) {
     final List<CellCoordinate> coordinates = new ArrayList<>();
-    for(final Row row : game.rows()) {
+    game.rows().forEach(row -> {
       row.cells().stream().filter(cell -> cell.type().equals(type)).forEach(cell -> {
         coordinates.add(CellCoordinate.with(row.index(), cell.index()));
       });
-    }
+    });
     return coordinates;
   }
 
