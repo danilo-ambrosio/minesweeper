@@ -10,7 +10,6 @@ package com.deviget.minesweeper.domain.model.game;
 public enum GameStatus {
   NEW,
   ONGOING,
-  PAUSED,
   WON,
   LOST
 }
