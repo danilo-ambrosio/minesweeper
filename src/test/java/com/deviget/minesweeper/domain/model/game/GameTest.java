@@ -1,10 +1,10 @@
 package com.deviget.minesweeper.domain.model.game;
 
-import com.deviget.minesweeper.domain.model.UserId;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.game.cell.CellStatus;
 import com.deviget.minesweeper.domain.model.game.cell.CellType;
+import com.deviget.minesweeper.domain.model.user.UserId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

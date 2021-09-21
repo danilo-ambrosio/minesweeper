@@ -1,4 +1,4 @@
-package com.deviget.minesweeper.domain.model;
+package com.deviget.minesweeper.domain.model.user;
 
 import java.util.Objects;
 import java.util.UUID;

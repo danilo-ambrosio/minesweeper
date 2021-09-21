@@ -13,3 +13,5 @@
 - Game Resume (20m)
 
 - Cell marks + tests (1h)
+
+- User model + tests (15m)

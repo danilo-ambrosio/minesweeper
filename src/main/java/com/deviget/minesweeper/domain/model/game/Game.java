@@ -1,9 +1,9 @@
 package com.deviget.minesweeper.domain.model.game;
 
-import com.deviget.minesweeper.domain.model.UserId;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
+import com.deviget.minesweeper.domain.model.user.UserId;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -31,7 +31,7 @@ public class Game {
     this.status = GameStatus.NEW;
     this.preferences = preferences;
     this.board = Board.empty(preferences);
-    this.startedOn = Instant.now().toEpochMilli();
+    this.startedOn = currentTimeMillis();
     this.updatedOn = startedOn;
     this.userId = userId;
   }
@@ -86,7 +86,7 @@ public class Game {
   }
 
   private void updateTimestamp() {
-    this.updatedOn = Instant.now().toEpochMilli();
+    this.updatedOn = currentTimeMillis();
   }
 
   public GameId id() {
@@ -115,6 +115,10 @@ public class Game {
 
   private boolean isNew() {
     return this.status.equals(GameStatus.NEW);
+  }
+
+  private long currentTimeMillis() {
+    return Instant.now().toEpochMilli();
   }
 
 }
