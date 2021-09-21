@@ -1,7 +1,13 @@
 package com.deviget.minesweeper.domain.model.user;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "user")
 public class User {
 
+  @Id
   private final UserId userId;
   private final String username;
   private final String password;
@@ -10,6 +16,7 @@ public class User {
     return new User(username, password);
   }
 
+  @PersistenceConstructor
   private User(final String username,
                final String password) {
     this.userId = UserId.create();

@@ -4,15 +4,20 @@ import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
 import com.deviget.minesweeper.domain.model.user.UserId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Document(collection = "game")
 public class Game {
 
-  private final GameId gameId;
+  @Id
+  private final GameId id;
   private final UserId userId;
   private final Preferences preferences;
   private final Board board;
@@ -22,17 +27,25 @@ public class Game {
 
   public static Game configure(final Preferences preferences,
                                final UserId userId) {
-    return new Game(preferences, userId);
+    final long now = Game.currentTimeMillis();
+    return new Game(GameId.create(), GameStatus.NEW, preferences,
+            Board.empty(preferences), now, now, userId);
   }
 
-  private Game(final Preferences preferences,
-               final UserId userId) {
-    this.gameId = GameId.create();
-    this.status = GameStatus.NEW;
+  @PersistenceConstructor
+  private Game(final GameId id,
+              final GameStatus status,
+              final Preferences preferences,
+              final Board board,
+              final long startedOn,
+              final long updatedOn,
+              final UserId userId) {
+    this.id = id;
+    this.status = status;
     this.preferences = preferences;
-    this.board = Board.empty(preferences);
-    this.startedOn = currentTimeMillis();
-    this.updatedOn = startedOn;
+    this.board = board;
+    this.startedOn = startedOn;
+    this.updatedOn = updatedOn;
     this.userId = userId;
   }
 
@@ -90,7 +103,7 @@ public class Game {
   }
 
   public GameId id() {
-    return gameId;
+    return id;
   }
 
   public UserId userId() {
@@ -117,7 +130,7 @@ public class Game {
     return this.status.equals(GameStatus.NEW);
   }
 
-  private long currentTimeMillis() {
+  private static long currentTimeMillis() {
     return Instant.now().toEpochMilli();
   }
 

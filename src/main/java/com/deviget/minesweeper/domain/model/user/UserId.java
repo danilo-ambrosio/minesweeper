@@ -1,18 +1,25 @@
 package com.deviget.minesweeper.domain.model.user;
 
+import org.springframework.data.annotation.PersistenceConstructor;
+
 import java.util.Objects;
 import java.util.UUID;
 
 public class UserId {
 
-  public final String value;
+  private final String value;
 
   public static UserId create() {
-    return new UserId();
+    return new UserId(UUID.randomUUID().toString());
   }
 
-  private UserId() {
-    this.value = UUID.randomUUID().toString();
+  public static UserId of(final String value) {
+    return new UserId(value);
+  }
+
+  @PersistenceConstructor
+  private UserId(final String value) {
+    this.value = value;
   }
 
   @Override

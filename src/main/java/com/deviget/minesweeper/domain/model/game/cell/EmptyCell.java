@@ -1,17 +1,30 @@
 package com.deviget.minesweeper.domain.model.game.cell;
 
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.TypeAlias;
+
+@TypeAlias("EmptyCell")
 public class EmptyCell extends Cell {
 
   public static Cell at(final int index) {
     return new EmptyCell(index);
   }
 
-  protected EmptyCell(final int index) {
+  public EmptyCell() {
+    this(0);
+  }
+
+  public EmptyCell(final int index) {
     this(index, CellStatus.COVERED);
   }
 
-  protected EmptyCell(final int index, final CellStatus cellStatus) {
-    super(index, CellType.EMPTY, cellStatus);
+  protected EmptyCell(final int index, final CellStatus status) {
+    this(index, CellType.EMPTY, status);
+  }
+
+  @PersistenceConstructor
+  private EmptyCell(final int index, final CellType type, final CellStatus status) {
+    super(index, type, status);
   }
 
   @Override

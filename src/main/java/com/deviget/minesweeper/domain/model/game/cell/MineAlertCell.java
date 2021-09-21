@@ -1,5 +1,9 @@
 package com.deviget.minesweeper.domain.model.game.cell;
 
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.TypeAlias;
+
+@TypeAlias("MineAlertCell")
 public class MineAlertCell extends Cell {
 
   private final int mines;
@@ -12,8 +16,13 @@ public class MineAlertCell extends Cell {
     return new MineAlertCell(index, mines, status);
   }
 
-  private MineAlertCell(final int index, final int mines, final CellStatus cellStatus) {
-    super(index, CellType.MINE_ALERT, cellStatus);
+  public MineAlertCell() {
+    this(0, 0, CellStatus.COVERED);
+  }
+
+  @PersistenceConstructor
+  protected MineAlertCell(final int index, final int mines, final CellStatus status) {
+    super(index, CellType.MINE_ALERT, status);
     this.mines = mines;
   }
 

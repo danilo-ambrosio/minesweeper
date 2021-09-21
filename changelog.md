@@ -15,3 +15,5 @@
 - Cell marks + tests (1h)
 
 - User model + tests (15m)
+
+- Adding ports and adapters (2h)

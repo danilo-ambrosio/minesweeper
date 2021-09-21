@@ -4,6 +4,7 @@ import com.deviget.minesweeper.domain.model.game.cell.AdjacentCellCoordinates;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,17 +19,18 @@ public class Board {
   private final List<Row> rows = new ArrayList<>();
 
   static Board empty(final Preferences preferences) {
-    return new Board(preferences);
-  }
-
-  private Board(final Preferences preferences) {
     final List<Row> rowsWithEmptyCells =
             IntStream.range(0, preferences.rows())
                     .mapToObj(rowIndex -> Row.empty(rowIndex, preferences.columns()))
                     .collect(Collectors.toList());
 
-    this.rows.addAll(rowsWithEmptyCells);
-    this.boardSize = preferences.boardSize();
+    return new Board(preferences.boardSize(), rowsWithEmptyCells);
+  }
+
+  @PersistenceConstructor
+  private Board(final BoardSize boardSize, final List<Row> rows) {
+    this.boardSize = boardSize;
+    this.rows.addAll(rows);
   }
 
   void placeMines(final Set<CellCoordinate> mineCoordinates) {

@@ -4,6 +4,7 @@ import com.deviget.minesweeper.domain.model.game.cell.AdjacentCellCoordinates;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.Collections;
 import java.util.Set;
@@ -17,12 +18,16 @@ public class Row {
   private final Set<Cell> cells = new TreeSet<>();
 
   public static Row empty(final int index, final int numberOfCells) {
-    return new Row(index, numberOfCells);
+    final Set<Cell> emptyCells =
+            IntStream.range(0, numberOfCells).mapToObj(Cell::emptyAt).collect(Collectors.toSet());
+
+    return new Row(index, emptyCells);
   }
 
-  private Row(final int index, final int numberOfCells) {
+  @PersistenceConstructor
+  private Row(final int index,  final Set<Cell> cells) {
     this.index = index;
-    this.cells.addAll(IntStream.range(0, numberOfCells).mapToObj(Cell::emptyAt).collect(Collectors.toSet()));
+    this.cells.addAll(cells);
   }
 
   public void placeMine(final int cellIndex) {

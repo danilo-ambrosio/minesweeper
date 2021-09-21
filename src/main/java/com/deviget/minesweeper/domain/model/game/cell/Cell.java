@@ -1,5 +1,7 @@
 package com.deviget.minesweeper.domain.model.game.cell;
 
+import org.springframework.data.annotation.PersistenceConstructor;
+
 import java.util.Objects;
 
 public abstract class Cell implements Comparable<Cell> {
@@ -20,10 +22,11 @@ public abstract class Cell implements Comparable<Cell> {
     return EmptyCell.at(index);
   }
 
-  protected Cell(final int index, final CellType type) {
+  public Cell(final int index, final CellType type) {
     this(index, type, CellStatus.COVERED);
   }
 
+  @PersistenceConstructor
   protected Cell(final int index, final CellType type, final CellStatus status) {
     this.index = index;
     this.type = type;

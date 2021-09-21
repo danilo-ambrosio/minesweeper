@@ -1,11 +1,20 @@
 package com.deviget.minesweeper.domain.model.game.cell;
 
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.TypeAlias;
+
+@TypeAlias("MineCell")
 public class MineCell extends Cell {
 
   public static final MineCell at(final int index, CellStatus status) {
     return new MineCell(index, status);
   }
 
+  public MineCell() {
+    this(0, CellStatus.COVERED);
+  }
+
+  @PersistenceConstructor
   private MineCell(final int index, final CellStatus status) {
     super(index, CellType.MINE, status);
   }

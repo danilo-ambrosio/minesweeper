@@ -1,5 +1,7 @@
 package com.deviget.minesweeper.domain.model.game;
 
+import org.springframework.data.annotation.PersistenceConstructor;
+
 public class Preferences {
 
   private final int rows;
@@ -24,6 +26,7 @@ public class Preferences {
     return new Preferences(rows, columns, numberOfMines);
   }
 
+  @PersistenceConstructor
   private Preferences(final int rows,
                       final int columns,
                       final int numberOfMines) {
