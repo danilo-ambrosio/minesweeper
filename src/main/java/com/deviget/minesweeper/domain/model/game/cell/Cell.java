@@ -41,7 +41,7 @@ public abstract class Cell implements Comparable<Cell> {
     return 0;
   }
 
-  public abstract Cell uncover(UncoveringType uncoveringType);
+  public abstract Cell uncover(final UncoveringType uncoveringType);
 
   public abstract Cell incrementMine();
 
