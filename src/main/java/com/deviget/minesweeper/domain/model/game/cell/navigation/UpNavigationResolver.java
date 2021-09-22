@@ -1,6 +1,7 @@
-package com.deviget.minesweeper.domain.model.game.cell;
+package com.deviget.minesweeper.domain.model.game.cell.navigation;
 
 import com.deviget.minesweeper.domain.model.game.BoardSize;
+import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 
 public class UpNavigationResolver implements CellNavigationResolver {
 

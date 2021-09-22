@@ -46,6 +46,33 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<property>
+					<name>!${env.ENV}</name>
+				</property>
+			</activation>
+			<properties>
+				<cors.allowed.origins>*</cors.allowed.origins>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>heroku</id>
+			<activation>
+				<property>
+					<name>env.ENV</name>
+					<value>heroku</value>
+				</property>
+			</activation>
+			<properties>
+				<cors.allowed.origins>https://dg-minesweeper.herokuapp.com/</cors.allowed.origins>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>

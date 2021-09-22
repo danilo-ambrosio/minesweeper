@@ -1,4 +1,4 @@
-package com.deviget.minesweeper;
+package com.deviget.minesweeper.infra;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,9 +1,9 @@
 package com.deviget.minesweeper.domain.model.game;
 
-import com.deviget.minesweeper.domain.model.game.cell.AdjacentCellCoordinates;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
+import com.deviget.minesweeper.domain.model.game.cell.navigation.AdjacentCellCoordinates;
 import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.ArrayList;

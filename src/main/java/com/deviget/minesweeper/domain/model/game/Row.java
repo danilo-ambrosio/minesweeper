@@ -1,9 +1,10 @@
 package com.deviget.minesweeper.domain.model.game;
 
-import com.deviget.minesweeper.domain.model.game.cell.AdjacentCellCoordinates;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
+import com.deviget.minesweeper.domain.model.game.cell.navigation.AdjacentCellCoordinates;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.stream.IntStream;
 public class Row {
 
   private final int index;
+  @BsonProperty(useDiscriminator = true)
   private final Set<Cell> cells = new TreeSet<>();
 
   public static Row empty(final int index, final int numberOfCells) {

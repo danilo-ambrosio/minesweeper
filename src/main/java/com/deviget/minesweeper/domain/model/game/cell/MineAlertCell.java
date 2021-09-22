@@ -1,9 +1,9 @@
 package com.deviget.minesweeper.domain.model.game.cell;
 
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.annotation.TypeAlias;
 
-@TypeAlias("MineAlertCell")
+@BsonDiscriminator("mineAlertCell")
 public class MineAlertCell extends Cell {
 
   private final int mines;

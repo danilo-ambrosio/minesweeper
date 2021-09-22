@@ -1,9 +1,9 @@
 package com.deviget.minesweeper.domain.model.game.cell;
 
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.annotation.TypeAlias;
 
-@TypeAlias("EmptyCell")
+@BsonDiscriminator("emptyCell")
 public class EmptyCell extends Cell {
 
   public static Cell at(final int index) {

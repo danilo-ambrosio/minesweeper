@@ -21,3 +21,5 @@
 - Exposing cell operations on Rest Resources + tests (2h)
 
 - Ports and adapters for User Registry + tests + exception handling (3h)
+
+- CORS + persistence mapping adjustment + Adding test assertions + Starting UI implementation (1h)

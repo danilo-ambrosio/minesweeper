@@ -85,6 +85,7 @@ public class GameResourceTest extends ResourceTest {
 
     Assertions.assertEquals("ONGOING", updatedGameData.status);
     Assertions.assertEquals("UNCOVERED", updatedGameData.rows.get(8).cells.get(3).status);
+    Assertions.assertTrue(updatedGameData.rows.stream().flatMap(row -> row.cells.stream()).filter(cell -> cell.type.equals("MINE_ALERT")).allMatch(cell -> cell.mines > 0));
   }
 
   @Test
@@ -128,7 +129,7 @@ public class GameResourceTest extends ResourceTest {
             this.mockMvc.perform(post("/games").header("userId", "2").contentType(APPLICATION_JSON_VALUE)
                     .content(asJson(firstPreferencesData))).andExpect(status().isCreated());
 
-    final PreferencesData secondPreferences = new PreferencesData(10, 4, 12);
+    final PreferencesData secondPreferences = new PreferencesData(10, 4, 3);
 
     final ResultActions secondGame =
             this.mockMvc.perform(post("/games").header("userId", "2").contentType(APPLICATION_JSON_VALUE)

@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class CellCoordinate {
 
-  final int rowIndex;
-  final int cellIndex;
+  public final int rowIndex;
+  public final int cellIndex;
 
   public static CellCoordinate random(final BoardSize boardSize) {
     return with(new Random().nextInt(boardSize.rows()), new Random().nextInt(boardSize.columns()));

@@ -21,7 +21,7 @@ public class CellData {
     this.index = cell.index();
     this.status = cell.status().name();
     this.type = cell.isUncovered() ? cell.type().name() : "";
-    this.mines = cell.isCovered() ? cell.mines() : 0;
+    this.mines = cell.isUncovered() ? cell.mines() : 0;
   }
 
 }
