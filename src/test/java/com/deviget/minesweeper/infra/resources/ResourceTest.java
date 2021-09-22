@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.UnsupportedEncodingException;
 
-public class ResourceTest {
+public abstract class ResourceTest {
 
   @Autowired
   protected Gson gson;

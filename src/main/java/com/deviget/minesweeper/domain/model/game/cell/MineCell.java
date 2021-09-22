@@ -6,12 +6,8 @@ import org.springframework.data.annotation.TypeAlias;
 @TypeAlias("MineCell")
 public class MineCell extends Cell {
 
-  public static final MineCell at(final int index, CellStatus status) {
+  public static final MineCell at(final int index, final CellStatus status) {
     return new MineCell(index, status);
-  }
-
-  public MineCell() {
-    this(0, CellStatus.COVERED);
   }
 
   @PersistenceConstructor
@@ -55,11 +51,6 @@ public class MineCell extends Cell {
   @Override
   public boolean equals(final Object other) {
     return super.equals(other);
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
   }
 
 }

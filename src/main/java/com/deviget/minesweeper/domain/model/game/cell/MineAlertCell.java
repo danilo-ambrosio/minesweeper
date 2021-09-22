@@ -16,10 +16,6 @@ public class MineAlertCell extends Cell {
     return new MineAlertCell(index, mines, status);
   }
 
-  public MineAlertCell() {
-    this(0, 0, CellStatus.COVERED);
-  }
-
   @PersistenceConstructor
   protected MineAlertCell(final int index, final int mines, final CellStatus status) {
     super(index, CellType.MINE_ALERT, status);
@@ -59,11 +55,6 @@ public class MineAlertCell extends Cell {
   @Override
   public boolean equals(final Object other) {
     return super.equals(other);
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
   }
 
 }

@@ -20,13 +20,9 @@ public class User {
   private User(final UserId id,
                final String username,
                final String password) {
-    this.id = UserId.create();
+    this.id = id;
     this.username = username;
     this.password = password;
-  }
-
-  public boolean authenticate(final String password) {
-    return this.password.equals(password);
   }
 
   public UserId id() {
@@ -37,7 +33,4 @@ public class User {
     return username;
   }
 
-  public String password() {
-    return password;
-  }
 }

@@ -22,10 +22,6 @@ public abstract class Cell implements Comparable<Cell> {
     return EmptyCell.at(index);
   }
 
-  public Cell(final int index, final CellType type) {
-    this(index, type, CellStatus.COVERED);
-  }
-
   @PersistenceConstructor
   protected Cell(final int index, final CellType type, final CellStatus status) {
     this.index = index;
@@ -82,7 +78,7 @@ public abstract class Cell implements Comparable<Cell> {
   @Override
   public boolean equals(final Object other) {
     if (this == other) return true;
-    if (other == null || !(other instanceof Cell)) return false;
+    if (!(other instanceof Cell)) return false;
     final Cell cell = (Cell) other;
     return index == cell.index;
   }

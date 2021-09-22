@@ -235,7 +235,7 @@ public class BoardTest {
     board.uncoverCell(CellCoordinate.with(2, 2), UncoveringType.USER_REQUEST);
     board.uncoverCell(CellCoordinate.with(1, 1), UncoveringType.USER_REQUEST);
 
-    Assertions.assertEquals(2, rows.stream().flatMap(row -> row.cells().stream()).filter(cell -> cell.isUncovered()).count());
+    Assertions.assertEquals(2, rows.stream().flatMap(row -> row.cells().stream()).filter(Cell::isUncovered).count());
     Assertions.assertEquals(CellStatus.UNCOVERED, rows.get(1).cellAt(1).status());
     Assertions.assertEquals(CellStatus.UNCOVERED, rows.get(2).cellAt(2).status());
   }

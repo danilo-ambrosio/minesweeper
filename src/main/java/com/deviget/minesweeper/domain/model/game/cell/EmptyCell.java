@@ -10,15 +10,11 @@ public class EmptyCell extends Cell {
     return new EmptyCell(index);
   }
 
-  public EmptyCell() {
-    this(0);
-  }
-
-  public EmptyCell(final int index) {
+  EmptyCell(final int index) {
     this(index, CellStatus.COVERED);
   }
 
-  protected EmptyCell(final int index, final CellStatus status) {
+  EmptyCell(final int index, final CellStatus status) {
     this(index, CellType.EMPTY, status);
   }
 
@@ -62,8 +58,4 @@ public class EmptyCell extends Cell {
     return super.equals(other);
   }
 
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
 }

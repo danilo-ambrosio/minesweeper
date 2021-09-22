@@ -34,7 +34,7 @@ public class GameTest {
     wait(200, () -> game.uncoverCell(CellCoordinate.with(2, 3)));
     Assertions.assertTrue(game.startedOn() < game.updatedOn());
     final long lastUpdate = game.updatedOn();
-    wait(200, () -> game.resume());
+    wait(200, game::resume);
     Assertions.assertTrue(lastUpdate < game.updatedOn());
   }
 

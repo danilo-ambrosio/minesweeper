@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionResolver {
 
   @ExceptionHandler(value = AuthenticationException.class)
-  public ResponseEntity<Object> resolveAuthenticationException(final AuthenticationException authenticationException) {
+  public ResponseEntity<Object> resolveAuthenticationException() {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
   }
 
   @ExceptionHandler(value = UserNotFoundException.class)
-  public ResponseEntity<Object> resolveUserNotFoundException(final UserNotFoundException userNotFoundException) {
+  public ResponseEntity<Object> resolveUserNotFoundException() {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
   }
 
   @ExceptionHandler(value = UniqueUsernameException.class )
-  public ResponseEntity<Object> resolveUniqueUsernameException(final UniqueUsernameException ex) {
+  public ResponseEntity<Object> resolveUniqueUsernameException() {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
   }
 
