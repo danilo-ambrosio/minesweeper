@@ -8,18 +8,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
   @Id
-  private final UserId userId;
+  private final UserId id;
   private final String username;
   private final String password;
 
   public static User with(final String username, final String password) {
-    return new User(username, password);
+    return new User(UserId.create(), username, password);
   }
 
   @PersistenceConstructor
-  private User(final String username,
+  private User(final UserId id,
+               final String username,
                final String password) {
-    this.userId = UserId.create();
+    this.id = UserId.create();
     this.username = username;
     this.password = password;
   }
@@ -28,4 +29,15 @@ public class User {
     return this.password.equals(password);
   }
 
+  public UserId id() {
+    return id;
+  }
+
+  public String username() {
+    return username;
+  }
+
+  public String password() {
+    return password;
+  }
 }

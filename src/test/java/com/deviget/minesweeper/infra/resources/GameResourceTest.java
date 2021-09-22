@@ -3,31 +3,23 @@ package com.deviget.minesweeper.infra.resources;
 import com.deviget.minesweeper.infra.resources.data.CellOperationData;
 import com.deviget.minesweeper.infra.resources.data.GameData;
 import com.deviget.minesweeper.infra.resources.data.PreferencesData;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GameResourceTest {
-
-  @Autowired
-  private MockMvc mockMvc;
-  private Gson gson = new Gson();
+public class GameResourceTest extends ResourceTest {
 
   @Test
   public void testThatGameIsConfigured() throws Exception {
@@ -35,15 +27,23 @@ public class GameResourceTest {
 
     final ResultActions configuredGame =
             this.mockMvc.perform(post("/games").header("userId", "1").contentType(APPLICATION_JSON_VALUE)
-                    .content(asJson(preferences))).andDo(print()).andExpect(status().isCreated());
+                    .content(asJson(preferences))).andExpect(status().isCreated());
 
-    final GameData configuredGameData = toGameData(configuredGame);
+    final GameData configuredGameData = toData(configuredGame, TypeToken.get(GameData.class));
 
     Assertions.assertNotNull(configuredGameData.id);
     Assertions.assertEquals("NEW", configuredGameData.status);
     Assertions.assertEquals(6, configuredGameData.rows.size());
     Assertions.assertEquals(60, configuredGameData.rows.stream().flatMap(row -> row.cells.stream()).filter(cell -> cell.status.equals("COVERED")).count());
     Assertions.assertEquals(0, configuredGameData.timeElapsed);
+  }
+
+  @Test
+  public void testThatGameIsNotConfiguredWithoutAuthenticatedUser() throws Exception {
+    final PreferencesData preferences = new PreferencesData(6, 10, 8);
+
+    this.mockMvc.perform(post("/games").contentType(APPLICATION_JSON_VALUE)
+            .content(asJson(preferences))).andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -54,7 +54,7 @@ public class GameResourceTest {
             this.mockMvc.perform(patch("/games/" + firstGame.id).header("userId", "2")
                     .contentType(APPLICATION_JSON_VALUE)).andExpect(status().isOk());
 
-    Assertions.assertTrue(firstGame.timeElapsed < toGameData(resumedGame).timeElapsed);
+    Assertions.assertTrue(firstGame.timeElapsed < toData(resumedGame, TypeToken.get(GameData.class)).timeElapsed);
   }
 
   @Test
@@ -65,7 +65,7 @@ public class GameResourceTest {
             this.mockMvc.perform(get("/games").header("userId", "2")
                     .contentType(APPLICATION_JSON_VALUE)).andExpect(status().isOk());
 
-    final List<GameData> unfinishedGamesData = toGamesData(unfinishedGames);
+    final List<GameData> unfinishedGamesData = toData(unfinishedGames, new TypeToken<>(){});
 
     Assertions.assertEquals(2, unfinishedGamesData.size());
   }
@@ -81,7 +81,7 @@ public class GameResourceTest {
                     .contentType(APPLICATION_JSON_VALUE).content(asJson(cellOperationData)))
                     .andExpect(status().isOk());
 
-    final GameData updatedGameData = toGameData(updatedGame);
+    final GameData updatedGameData = toData(updatedGame, TypeToken.get(GameData.class));
 
     Assertions.assertEquals("ONGOING", updatedGameData.status);
     Assertions.assertEquals("UNCOVERED", updatedGameData.rows.get(8).cells.get(3).status);
@@ -98,7 +98,7 @@ public class GameResourceTest {
                     .contentType(APPLICATION_JSON_VALUE).content(asJson(cellOperationData)))
                     .andExpect(status().isOk());
 
-    final GameData updatedGameData = toGameData(updatedGame);
+    final GameData updatedGameData = toData(updatedGame, TypeToken.get(GameData.class));
 
     Assertions.assertEquals("NEW", updatedGameData.status);
     Assertions.assertEquals("FLAGGED", updatedGameData.rows.get(4).cells.get(0).status);
@@ -115,7 +115,7 @@ public class GameResourceTest {
                             .contentType(APPLICATION_JSON_VALUE).content(asJson(cellOperationData)))
                     .andExpect(status().isOk());
 
-    final GameData updatedGameData = toGameData(updatedGame);
+    final GameData updatedGameData = toData(updatedGame, TypeToken.get(GameData.class));
 
     Assertions.assertEquals("NEW", updatedGameData.status);
     Assertions.assertEquals("QUESTION_MARKED", updatedGameData.rows.get(5).cells.get(2).status);
@@ -140,21 +140,13 @@ public class GameResourceTest {
             this.mockMvc.perform(post("/games").header("userId", "3").contentType(APPLICATION_JSON_VALUE)
                     .content(asJson(thirdPreferences))).andExpect(status().isCreated());
 
-    return List.of(toGameData(firstGame), toGameData(secondGame), toGameData(thirdGame));
+    return List.of(toData(firstGame, TypeToken.get(GameData.class)),
+            toData(secondGame, TypeToken.get(GameData.class)),
+            toData(thirdGame, TypeToken.get(GameData.class)));
   }
 
-  private GameData toGameData(final ResultActions resultActions) throws UnsupportedEncodingException {
-    final String responseContent = resultActions.andReturn().getResponse().getContentAsString();
-    return gson.fromJson(responseContent, GameData.class);
+  @AfterEach
+  public void tearDown() {
+    mongoTemplate.dropCollection("game");
   }
-
-  private List<GameData> toGamesData(final ResultActions resultActions) throws UnsupportedEncodingException {
-    final String responseContent = resultActions.andReturn().getResponse().getContentAsString();
-    return gson.fromJson(responseContent, new TypeToken<List<GameData>>(){}.getType());
-  }
-
-  private String asJson(final Object object) {
-    return gson.toJson(object);
-  }
-
 }

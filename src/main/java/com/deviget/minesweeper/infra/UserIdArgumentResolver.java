@@ -1,6 +1,7 @@
 package com.deviget.minesweeper.infra;
 
 import com.deviget.minesweeper.domain.model.user.UserId;
+import com.deviget.minesweeper.domain.model.user.UserNotFoundException;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -19,6 +20,10 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
                                 final ModelAndViewContainer modelAndViewContainer,
                                 final NativeWebRequest nativeWebRequest,
                                 final WebDataBinderFactory webDataBinderFactory) {
-    return UserId.of(nativeWebRequest.getHeader("userId"));
+    final String userId = nativeWebRequest.getHeader("userId");
+    if(userId == null) {
+      throw new UserNotFoundException();
+    }
+    return UserId.of(userId);
   }
 }

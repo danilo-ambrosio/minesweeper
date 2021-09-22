@@ -19,3 +19,5 @@
 - Adding ports and adapters (2h)
 
 - Exposing cell operations on Rest Resources + tests (2h)
+
+- Ports and adapters for User Registry + tests + exception handling (3h)
