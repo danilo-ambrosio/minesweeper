@@ -12,7 +12,7 @@
 	<artifactId>minesweeper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Minesweeper Service</name>
-	<description>This project implements the server-side component of a Minesweeper game</description>
+	<description>This project implements the server-side component of Minesweeper game</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
