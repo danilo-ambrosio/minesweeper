@@ -20,8 +20,8 @@ public class CellData {
   private CellData(final Cell cell) {
     this.index = cell.index();
     this.status = cell.status().name();
-    this.type = cell.type().name();
-    this.mines = cell.mines();
+    this.type = cell.isUncovered() ? cell.type().name() : "";
+    this.mines = cell.isCovered() ? cell.mines() : 0;
   }
 
 }

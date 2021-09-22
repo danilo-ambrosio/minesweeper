@@ -4,13 +4,18 @@ import com.deviget.minesweeper.domain.model.game.Game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameData {
 
   public final String id;
   public final String status;
-  public final long updateOn;
+  public final long timeElapsed;
   public final List<RowData> rows = new ArrayList<>();
+
+  public static List<GameData> from(List<Game> games) {
+    return games.stream().map(GameData::from).collect(Collectors.toList());
+  }
 
   public static GameData from(final Game game) {
     return new GameData(game);
@@ -18,9 +23,8 @@ public class GameData {
 
   private GameData(final Game game) {
     this.id = game.id().value();
-    this.updateOn = game.updatedOn();
+    this.timeElapsed = game.updatedOn() - game.startedOn();
     this.status = game.status().toString();
     this.rows.addAll(RowData.from(game.rows()));
   }
-
 }

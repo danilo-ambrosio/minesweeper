@@ -17,3 +17,5 @@
 - User model + tests (15m)
 
 - Adding ports and adapters (2h)
+
+- Exposing cell operations on Rest Resources + tests (2h)
