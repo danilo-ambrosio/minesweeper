@@ -12,6 +12,5 @@ public enum GameStatus {
   ONGOING,
   PAUSED,
   WON,
-  LOST;
-
+  LOST
 }

@@ -53,11 +53,11 @@ public class GameTest {
   @Test
   public void testThatGameIsNotResumed()  {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
-    Assertions.assertThrows(IllegalStateException.class, () -> game.resume());
+    Assertions.assertThrows(IllegalStateException.class, game::resume);
   }
 
   @Test
-  public void testThatTimeElapsedIsIncreased() throws InterruptedException {
+  public void testThatTimeElapsedIsIncreased() {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
     game.uncoverCell(CellCoordinate.with(2, 3), 1000);
     game.placeFlag(CellCoordinate.with(1, 2), 2000);
@@ -131,7 +131,7 @@ public class GameTest {
     game.uncoverCell(CellCoordinate.with(2, 3), 1);
     game.uncoverCell(findCellCoordinates(game, CellType.MINE).get(0), 1);
     Assertions.assertEquals(GameStatus.LOST, game.status());
-    Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(cell -> cell.isUncovered()));
+    Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(Cell::isUncovered));
   }
 
   @Test
@@ -141,16 +141,13 @@ public class GameTest {
     findCellCoordinates(game, CellType.EMPTY).forEach(coordinate -> game.uncoverCell(coordinate, 1));
     findCellCoordinates(game, CellType.MINE_ALERT).forEach(coordinate -> game.uncoverCell(coordinate, 1));
     Assertions.assertEquals(GameStatus.WON, game.status());
-    Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(cell -> cell.isUncovered()));
+    Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(Cell::isUncovered));
   }
 
   private List<CellCoordinate> findCellCoordinates(final Game game, final CellType type) {
     final List<CellCoordinate> coordinates = new ArrayList<>();
-    game.rows().forEach(row -> {
-      row.cells().stream().filter(cell -> cell.type().equals(type)).forEach(cell -> {
-        coordinates.add(CellCoordinate.with(row.index(), cell.index()));
-      });
-    });
+    game.rows().forEach(row -> row.cells().stream().filter(cell -> cell.type().equals(type))
+            .forEach(cell -> coordinates.add(CellCoordinate.with(row.index(), cell.index()))));
     return coordinates;
   }
 

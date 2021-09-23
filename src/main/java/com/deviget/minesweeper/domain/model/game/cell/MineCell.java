@@ -6,7 +6,7 @@ import org.springframework.data.annotation.PersistenceConstructor;
 @BsonDiscriminator("mineCell")
 public class MineCell extends Cell {
 
-  public static final MineCell at(final int index, final CellStatus status) {
+  public static MineCell at(final int index, final CellStatus status) {
     return new MineCell(index, status);
   }
 
