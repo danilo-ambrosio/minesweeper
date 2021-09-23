@@ -10,6 +10,7 @@ public class GameData {
 
   public final String id;
   public final String status;
+  public final long startedOn;
   public final long timeElapsed;
   public final List<RowData> rows = new ArrayList<>();
 
@@ -23,7 +24,8 @@ public class GameData {
 
   private GameData(final Game game) {
     this.id = game.id().value();
-    this.timeElapsed = game.updatedOn() - game.startedOn();
+    this.startedOn = game.startedOn();
+    this.timeElapsed = game.timeElapsed();
     this.status = game.status().toString();
     this.rows.addAll(RowData.from(game.rows()));
   }

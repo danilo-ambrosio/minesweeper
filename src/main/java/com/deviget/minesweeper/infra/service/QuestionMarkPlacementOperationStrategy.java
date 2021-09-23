@@ -2,7 +2,6 @@ package com.deviget.minesweeper.infra.service;
 
 import com.deviget.minesweeper.domain.model.game.Game;
 import com.deviget.minesweeper.domain.model.game.GameId;
-import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.user.UserId;
 import com.deviget.minesweeper.infra.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,9 @@ public class QuestionMarkPlacementOperationStrategy implements CellOperationStra
   private GameRepository gameRepository;
 
   @Override
-  public Game perform(final GameId gameId, final UserId userId, final CellCoordinate cellCoordinate) {
+  public Game perform(final GameId gameId, final UserId userId, final CellOperation operation) {
     final Game existingGame = gameRepository.findByIdAndUserId(gameId, userId);
-    existingGame.placeQuestionMark(cellCoordinate);
+    existingGame.placeQuestionMark(operation.cellCoordinate, operation.timeElapsed);
     return gameRepository.save(existingGame);
   }
 

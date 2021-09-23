@@ -22,32 +22,61 @@ public class GameTest {
     Assertions.assertNotNull(game.id());
     Assertions.assertEquals(userId, game.userId());
     Assertions.assertEquals(GameStatus.NEW, game.status());
-    Assertions.assertEquals(game.startedOn(), game.updatedOn());
+    Assertions.assertNotNull(game.startedOn());
     Assertions.assertEquals(4, game.rows().size());
     Assertions.assertTrue(game.rows().stream().allMatch(row -> row.cells().size() == 6));
     Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(cell -> cell.isEmpty() && cell.isCovered()));
   }
 
   @Test
-  public void testThatTimestampIsUpdated() throws InterruptedException {
+  public void testThatGameIsPaused()  {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
-    wait(200, () -> game.uncoverCell(CellCoordinate.with(2, 3)));
-    Assertions.assertTrue(game.startedOn() < game.updatedOn());
-    final long lastUpdate = game.updatedOn();
-    wait(200, game::resume);
-    Assertions.assertTrue(lastUpdate < game.updatedOn());
+    game.pause(1000);
+    Assertions.assertEquals(GameStatus.PAUSED, game.status());
+  }
+
+  @Test
+  public void testThatGameIsNotPaused()  {
+    final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
+    game.pause(1000);
+    Assertions.assertThrows(IllegalStateException.class, () -> game.pause(1000));
+  }
+
+  @Test
+  public void testThatGameIsResumed()  {
+    final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
+    game.pause(1000);
+    game.resume();
+    Assertions.assertEquals(GameStatus.ONGOING, game.status());
+  }
+
+  @Test
+  public void testThatGameIsNotResumed()  {
+    final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
+    Assertions.assertThrows(IllegalStateException.class, () -> game.resume());
+  }
+
+  @Test
+  public void testThatTimeElapsedIsIncreased() throws InterruptedException {
+    final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
+    game.uncoverCell(CellCoordinate.with(2, 3), 1000);
+    game.placeFlag(CellCoordinate.with(1, 2), 2000);
+    game.placeQuestionMark(CellCoordinate.with(1, 4), 3000);
+    game.clearCell(CellCoordinate.with(1, 4), 3000);
+    game.pause(1000);
+    Assertions.assertEquals(10000, game.timeElapsed());
   }
 
   @Test
   public void testThatIndicatorsArePlaced() {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
-    game.placeFlag(CellCoordinate.with(1, 1));
-    game.placeQuestionMark(CellCoordinate.with(2, 2));
-    game.uncoverCell(CellCoordinate.with(0, 5));
-    game.placeFlag(CellCoordinate.with(0, 5));
-    game.placeQuestionMark(CellCoordinate.with(0, 5));
-    game.placeFlag(CellCoordinate.with(3, 4));
-    game.placeQuestionMark(CellCoordinate.with(3, 3));
+    game.placeFlag(CellCoordinate.with(1, 1), 1);
+    game.placeQuestionMark(CellCoordinate.with(2, 2), 1);
+    game.uncoverCell(CellCoordinate.with(0, 5), 1);
+    game.placeFlag(CellCoordinate.with(0, 5), 1);
+    game.placeQuestionMark(CellCoordinate.with(0, 5), 1);
+    game.placeFlag(CellCoordinate.with(3, 4), 1);
+    game.placeQuestionMark(CellCoordinate.with(3, 3), 1);
 
     final List<Row> rows = game.rows();
 
@@ -61,21 +90,21 @@ public class GameTest {
   @Test
   public void testThatIndicatorsAreCleared() {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
-    game.placeFlag(CellCoordinate.with(1, 1));
-    game.placeQuestionMark(CellCoordinate.with(2, 2));
-    game.uncoverCell(CellCoordinate.with(0, 5));
-    game.placeFlag(CellCoordinate.with(0, 5));
-    game.placeQuestionMark(CellCoordinate.with(0, 5));
-    game.placeFlag(CellCoordinate.with(3, 4));
-    game.placeQuestionMark(CellCoordinate.with(3, 3));
+    game.placeFlag(CellCoordinate.with(1, 1), 1);
+    game.placeQuestionMark(CellCoordinate.with(2, 2), 1);
+    game.uncoverCell(CellCoordinate.with(0, 5), 1);
+    game.placeFlag(CellCoordinate.with(0, 5), 1);
+    game.placeQuestionMark(CellCoordinate.with(0, 5), 1);
+    game.placeFlag(CellCoordinate.with(3, 4), 1);
+    game.placeQuestionMark(CellCoordinate.with(3, 3), 1);
 
-    game.clearCell(CellCoordinate.with(1, 1));
-    game.clearCell(CellCoordinate.with(2, 2));
-    game.clearCell(CellCoordinate.with(0, 5));
-    game.clearCell(CellCoordinate.with(0, 5));
-    game.clearCell(CellCoordinate.with(0, 5));
-    game.clearCell(CellCoordinate.with(3, 4));
-    game.clearCell(CellCoordinate.with(3, 3));
+    game.clearCell(CellCoordinate.with(1, 1), 1);
+    game.clearCell(CellCoordinate.with(2, 2), 1);
+    game.clearCell(CellCoordinate.with(0, 5), 1);
+    game.clearCell(CellCoordinate.with(0, 5), 1);
+    game.clearCell(CellCoordinate.with(0, 5), 1);
+    game.clearCell(CellCoordinate.with(3, 4), 1);
+    game.clearCell(CellCoordinate.with(3, 3), 1);
 
     final List<Row> rows = game.rows();
 
@@ -89,7 +118,7 @@ public class GameTest {
   @Test
   public void testThatCellIsUncoveredWhenGameIsNew() {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
-    game.uncoverCell(CellCoordinate.with(2, 3));
+    game.uncoverCell(CellCoordinate.with(2, 3), 1);
     Assertions.assertEquals(GameStatus.ONGOING, game.status());
     Assertions.assertEquals(4, game.rows().size());
     Assertions.assertEquals(10, game.rows().stream().flatMap(row -> row.cells().stream()).filter(Cell::isMine).count());
@@ -99,17 +128,17 @@ public class GameTest {
   @Test
   public void testThatGameStatusIsLost() {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
-    game.uncoverCell(CellCoordinate.with(2, 3));
-    game.uncoverCell(findCellCoordinates(game, CellType.MINE).get(0));
+    game.uncoverCell(CellCoordinate.with(2, 3), 1);
+    game.uncoverCell(findCellCoordinates(game, CellType.MINE).get(0), 1);
     Assertions.assertEquals(GameStatus.LOST, game.status());
   }
 
   @Test
   public void testThatGameStatusIsWon() {
     final Game game = Game.configure(Preferences.with(4, 6, 2), UserId.create());
-    game.uncoverCell(CellCoordinate.with(2, 3));
-    findCellCoordinates(game, CellType.EMPTY).forEach(game::uncoverCell);
-    findCellCoordinates(game, CellType.MINE_ALERT).forEach(game::uncoverCell);
+    game.uncoverCell(CellCoordinate.with(2, 3), 1);
+    findCellCoordinates(game, CellType.EMPTY).forEach(coordinate -> game.uncoverCell(coordinate, 1));
+    findCellCoordinates(game, CellType.MINE_ALERT).forEach(coordinate -> game.uncoverCell(coordinate, 1));
     Assertions.assertEquals(GameStatus.WON, game.status());
   }
 
@@ -123,8 +152,4 @@ public class GameTest {
     return coordinates;
   }
 
-  private void wait(final int millis, final Runnable task) throws InterruptedException {
-    Thread.sleep(millis);
-    task.run();
-  }
 }

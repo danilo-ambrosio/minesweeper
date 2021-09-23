@@ -7,15 +7,11 @@
 
 package com.deviget.minesweeper.domain.model.game;
 
-import java.util.List;
-
 public enum GameStatus {
   NEW,
   ONGOING,
+  PAUSED,
   WON,
   LOST;
 
-  public static List<GameStatus> unfinished() {
-    return List.of(NEW, ONGOING);
-  }
 }

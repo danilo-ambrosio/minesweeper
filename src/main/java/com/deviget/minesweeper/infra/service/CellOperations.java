@@ -5,24 +5,24 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static com.deviget.minesweeper.infra.service.CellOperation.*;
+import static com.deviget.minesweeper.infra.service.CellOperationType.*;
 
 @Component
 public class CellOperations {
 
-  private final Map<CellOperation, CellOperationStrategy> cellOperationStrategies;
+  private final Map<CellOperationType, CellOperationStrategy> strategies;
 
   public CellOperations(@Qualifier("uncoveringOperationStrategy") final CellOperationStrategy uncoveringOperation,
                         @Qualifier("flagPlacementOperationStrategy") final CellOperationStrategy flagPlacementOperation,
                         @Qualifier("clearanceOperationStrategy") final CellOperationStrategy clearanceOperation,
                         @Qualifier("questionMarkPlacementOperationStrategy") final CellOperationStrategy questionMarkPlacementOperation) {
-    this.cellOperationStrategies =
+    this.strategies =
             Map.of(UNCOVERING, uncoveringOperation, FLAG_PLACEMENT, flagPlacementOperation,
                     CLEARANCE, clearanceOperation, QUESTION_MARK_PLACEMENT, questionMarkPlacementOperation);
   }
 
-  public CellOperationStrategy of(final CellOperation cellOperation) {
-    return cellOperationStrategies.get(cellOperation);
+  public CellOperationStrategy of(final CellOperationType cellOperationType) {
+    return strategies.get(cellOperationType);
   }
 
 }

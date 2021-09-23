@@ -4,8 +4,8 @@ import com.deviget.minesweeper.domain.model.game.Game;
 import com.deviget.minesweeper.domain.model.game.GameId;
 import com.deviget.minesweeper.domain.model.user.UserId;
 
-public interface CellOperationStrategy {
+public interface GameStatusTransitionStrategy {
 
-  Game perform(final GameId gameId, final UserId userId, final CellOperation cellOperation);
+  Game changeStatus(final GameId id, final UserId userId, final GameStatusTransition statusTransition);
 
 }

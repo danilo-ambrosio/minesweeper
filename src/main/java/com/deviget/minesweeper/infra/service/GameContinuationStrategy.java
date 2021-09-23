@@ -7,16 +7,17 @@ import com.deviget.minesweeper.infra.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component("flagPlacementOperationStrategy")
-public class FlagPlacementOperationStrategy implements CellOperationStrategy {
+@Component("gameContinuationStrategy")
+public class GameContinuationStrategy implements GameStatusTransitionStrategy {
 
   @Autowired
   private GameRepository gameRepository;
 
   @Override
-  public Game perform(final GameId gameId, final UserId userId, final CellOperation operation) {
-    final Game existingGame = gameRepository.findByIdAndUserId(gameId, userId);
-    existingGame.placeFlag(operation.cellCoordinate, operation.timeElapsed);
+  public Game changeStatus(final GameId id, final UserId userId, final GameStatusTransition statusTransition) {
+    final Game existingGame = gameRepository.findByIdAndUserId(id, userId);
+    existingGame.resume();
     return gameRepository.save(existingGame);
   }
+
 }
