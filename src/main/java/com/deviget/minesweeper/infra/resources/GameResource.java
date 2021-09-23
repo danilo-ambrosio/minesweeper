@@ -33,9 +33,9 @@ public class GameResource {
   }
 
   @PatchMapping("/{id}/status")
-  public ResponseEntity<GameData> pause(@PathVariable final String id,
-                                        @RequestBody final GameStatusTransitionData statusTransitionData,
-                                        final UserId userId) {
+  public ResponseEntity<GameData> changeStatus(@PathVariable final String id,
+                                               @RequestBody final GameStatusTransitionData statusTransitionData,
+                                               final UserId userId) {
     final GameStatusTransition statusTransition =
             GameStatusTransition.becauseOf(statusTransitionData.reason, statusTransitionData.timeElapsed);
 
