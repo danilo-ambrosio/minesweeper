@@ -58,8 +58,7 @@ public class GameResource {
 
   @GetMapping
   public ResponseEntity<List<GameData>> findPaused(final UserId userId) {
-    final List<Game> games = gameService.findPaused(userId);
-    return ResponseEntity.ok(GameData.from(games));
+    return ResponseEntity.ok(GameData.from(gameService.findPaused(userId)));
   }
 
 }
