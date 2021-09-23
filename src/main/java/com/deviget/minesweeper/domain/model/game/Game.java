@@ -83,14 +83,14 @@ public class Game {
     updateTimestamp();
   }
 
-  private Set<CellCoordinate> resolveMineCoordinates(final CellCoordinate ignoredCoordinate) {
+  private Set<CellCoordinate> resolveMineCoordinates(final CellCoordinate protectedCoordinate) {
     final Set<CellCoordinate> mineCoordinates = new HashSet<>();
 
     while(mineCoordinates.size() < preferences.numberOfMines()) {
       final CellCoordinate randomCoordinate =
               CellCoordinate.random(preferences.boardSize());
 
-      if(!ignoredCoordinate.equals(randomCoordinate)) {
+      if(!protectedCoordinate.equals(randomCoordinate)) {
         mineCoordinates.add(randomCoordinate);
       }
     }
