@@ -27,3 +27,5 @@
 - Cell clearance op + tests (30m)
 
 - Refactoring of game status flow + reliable time elapsed handling + tests (2h) 
+
+- Game ending handling + tests (30m)

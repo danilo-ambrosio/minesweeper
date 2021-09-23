@@ -131,6 +131,7 @@ public class GameTest {
     game.uncoverCell(CellCoordinate.with(2, 3), 1);
     game.uncoverCell(findCellCoordinates(game, CellType.MINE).get(0), 1);
     Assertions.assertEquals(GameStatus.LOST, game.status());
+    Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(cell -> cell.isUncovered()));
   }
 
   @Test
@@ -140,6 +141,7 @@ public class GameTest {
     findCellCoordinates(game, CellType.EMPTY).forEach(coordinate -> game.uncoverCell(coordinate, 1));
     findCellCoordinates(game, CellType.MINE_ALERT).forEach(coordinate -> game.uncoverCell(coordinate, 1));
     Assertions.assertEquals(GameStatus.WON, game.status());
+    Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(cell -> cell.isUncovered()));
   }
 
   private List<CellCoordinate> findCellCoordinates(final Game game, final CellType type) {

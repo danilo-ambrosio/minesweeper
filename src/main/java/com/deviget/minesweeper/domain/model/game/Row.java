@@ -61,15 +61,31 @@ public class Row {
   public Cell uncoverCell(final Board board,
                           final CellCoordinate cellCoordinate,
                           final UncoveringType uncoveringType) {
+    return uncoverCell(board, cellAt(cellCoordinate.cellIndex()), uncoveringType);
+  }
+
+  void handleGameEnding(final Board board) {
+    final Set<Cell> uncoveredCells =
+            this.cells.stream().map(cell -> uncoverCell(board, cell, UncoveringType.GAME_ENDING)).collect(Collectors.toSet());
+
+    this.cells.clear();
+    this.cells.addAll(uncoveredCells);
+  }
+
+  private Cell uncoverCell(final Board board,
+                           final Cell cell,
+                           final UncoveringType uncoveringType) {
     final Cell uncoveredCell =
-            cellAt(cellCoordinate.cellIndex()).uncover(uncoveringType);
+            cell.uncover(uncoveringType);
 
-    updateCell(uncoveredCell);
+    if(!uncoveringType.isGameEnding()) {
+      updateCell(uncoveredCell);
 
-    if(uncoveredCell.shouldPropagateUncovering()) {
-      AdjacentCellCoordinates.resolve(board.size(), cellCoordinate).forEach(adjacentCoordinate -> {
-        board.uncoverCell(adjacentCoordinate, UncoveringType.PROPAGATION);
-      });
+
+      if(uncoveredCell.shouldPropagateUncovering()) {
+        AdjacentCellCoordinates.resolve(board.size(), CellCoordinate.with(index, cell.index()))
+                .forEach(adjacentCoordinate -> board.uncoverCell(adjacentCoordinate, UncoveringType.PROPAGATION));
+      }
     }
 
     return uncoveredCell;

@@ -48,6 +48,10 @@ public class Board {
     return row.uncoverCell(this, cellCoordinate, userRequest);
   }
 
+  void handleGameEnding() {
+    this.rows.forEach(row -> row.handleGameEnding(this));
+  }
+
   void placeQuestionMark(final CellCoordinate cellCoordinate) {
     final Row row = rowAt(cellCoordinate.rowIndex());
     final Cell cell = row.cellAt(cellCoordinate.cellIndex());

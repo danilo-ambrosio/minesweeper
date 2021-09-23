@@ -65,6 +65,10 @@ public class Game {
       this.status = GameStatus.LOST;
     }
 
+    if(isOver()) {
+      this.board.handleGameEnding();
+    }
+
     this.elapseTime(timeElapsed);
   }
 
@@ -151,6 +155,10 @@ public class Game {
 
   private boolean isOngoing() {
     return this.status.equals(GameStatus.ONGOING);
+  }
+
+  private boolean isOver() {
+    return this.status.equals(GameStatus.WON) || this.status.equals(GameStatus.LOST);
   }
 
   private static long currentTimeMillis() {
