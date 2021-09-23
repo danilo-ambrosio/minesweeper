@@ -68,7 +68,7 @@
 				</property>
 			</activation>
 			<properties>
-				<cors.allowed.origins>https://dg-minesweeper.herokuapp.com/</cors.allowed.origins>
+				<cors.allowed.origins>https://dg-minesweeper.herokuapp.com</cors.allowed.origins>
 			</properties>
 		</profile>
 	</profiles>
