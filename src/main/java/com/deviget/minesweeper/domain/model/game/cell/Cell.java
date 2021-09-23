@@ -46,6 +46,8 @@ public abstract class Cell implements Comparable<Cell> {
 
   public abstract Cell placeFlag();
 
+  public abstract Cell clear();
+
   public boolean isMine() {
     return false;
   }

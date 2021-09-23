@@ -39,6 +39,14 @@ public class MineCell extends Cell {
   }
 
   @Override
+  public Cell clear() {
+    if(this.isUncovered()) {
+      return this;
+    }
+    return new MineCell(index(), CellStatus.COVERED);
+  }
+
+  @Override
   public boolean shouldPropagateUncovering() {
     return false;
   }

@@ -39,7 +39,7 @@ public class GameTest {
   }
 
   @Test
-  public void testThatQuestionMarkIsPlaced() {
+  public void testThatIndicatorsArePlaced() {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
     game.placeFlag(CellCoordinate.with(1, 1));
     game.placeQuestionMark(CellCoordinate.with(2, 2));
@@ -56,6 +56,34 @@ public class GameTest {
     Assertions.assertEquals(CellStatus.QUESTION_MARKED, rows.get(2).cellAt(2).status());
     Assertions.assertEquals(CellStatus.QUESTION_MARKED, rows.get(3).cellAt(3).status());
     Assertions.assertEquals(CellStatus.FLAGGED, rows.get(3).cellAt(4).status());
+  }
+
+  @Test
+  public void testThatIndicatorsAreCleared() {
+    final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
+    game.placeFlag(CellCoordinate.with(1, 1));
+    game.placeQuestionMark(CellCoordinate.with(2, 2));
+    game.uncoverCell(CellCoordinate.with(0, 5));
+    game.placeFlag(CellCoordinate.with(0, 5));
+    game.placeQuestionMark(CellCoordinate.with(0, 5));
+    game.placeFlag(CellCoordinate.with(3, 4));
+    game.placeQuestionMark(CellCoordinate.with(3, 3));
+
+    game.clearCell(CellCoordinate.with(1, 1));
+    game.clearCell(CellCoordinate.with(2, 2));
+    game.clearCell(CellCoordinate.with(0, 5));
+    game.clearCell(CellCoordinate.with(0, 5));
+    game.clearCell(CellCoordinate.with(0, 5));
+    game.clearCell(CellCoordinate.with(3, 4));
+    game.clearCell(CellCoordinate.with(3, 3));
+
+    final List<Row> rows = game.rows();
+
+    Assertions.assertEquals(CellStatus.UNCOVERED, rows.get(0).cellAt(5).status());
+    Assertions.assertEquals(CellStatus.COVERED, rows.get(1).cellAt(1).status());
+    Assertions.assertEquals(CellStatus.COVERED, rows.get(2).cellAt(2).status());
+    Assertions.assertEquals(CellStatus.COVERED, rows.get(3).cellAt(3).status());
+    Assertions.assertEquals(CellStatus.COVERED, rows.get(3).cellAt(4).status());
   }
 
   @Test

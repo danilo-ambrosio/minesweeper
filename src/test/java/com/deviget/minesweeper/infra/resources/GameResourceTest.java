@@ -74,11 +74,11 @@ public class GameResourceTest extends ResourceTest {
   public void testThatCellIsUncovered() throws Exception {
     final GameData secondGame = createGameSample().get(1);
 
-    final CellOperationData cellOperationData = new CellOperationData(8, 3, "UNCOVERING");
+    final CellOperationData uncovering = new CellOperationData(8, 3, "UNCOVERING");
 
     final ResultActions updatedGame =
             this.mockMvc.perform(patch("/games/" + secondGame.id + "/cell").header("userId", "2")
-                    .contentType(APPLICATION_JSON_VALUE).content(asJson(cellOperationData)))
+                    .contentType(APPLICATION_JSON_VALUE).content(asJson(uncovering)))
                     .andExpect(status().isOk());
 
     final GameData updatedGameData = toData(updatedGame, TypeToken.get(GameData.class));
@@ -92,11 +92,11 @@ public class GameResourceTest extends ResourceTest {
   public void testThatFlagIsPlaced() throws Exception {
     final GameData secondGame = createGameSample().get(1);
 
-    final CellOperationData cellOperationData = new CellOperationData(4, 0, "FLAG_PLACEMENT");
+    final CellOperationData flagPlacement = new CellOperationData(4, 0, "FLAG_PLACEMENT");
 
     final ResultActions updatedGame =
             this.mockMvc.perform(patch("/games/" + secondGame.id + "/cell").header("userId", "2")
-                    .contentType(APPLICATION_JSON_VALUE).content(asJson(cellOperationData)))
+                    .contentType(APPLICATION_JSON_VALUE).content(asJson(flagPlacement)))
                     .andExpect(status().isOk());
 
     final GameData updatedGameData = toData(updatedGame, TypeToken.get(GameData.class));
@@ -109,11 +109,11 @@ public class GameResourceTest extends ResourceTest {
   public void testThatQuestionMarkIsPlaced() throws Exception {
     final GameData secondGame = createGameSample().get(1);
 
-    final CellOperationData cellOperationData = new CellOperationData(5, 2, "QUESTION_MARK_PLACEMENT");
+    final CellOperationData questionMarkPlacement = new CellOperationData(5, 2, "QUESTION_MARK_PLACEMENT");
 
     final ResultActions updatedGame =
             this.mockMvc.perform(patch("/games/" + secondGame.id + "/cell").header("userId", "2")
-                            .contentType(APPLICATION_JSON_VALUE).content(asJson(cellOperationData)))
+                            .contentType(APPLICATION_JSON_VALUE).content(asJson(questionMarkPlacement)))
                     .andExpect(status().isOk());
 
     final GameData updatedGameData = toData(updatedGame, TypeToken.get(GameData.class));
@@ -121,6 +121,28 @@ public class GameResourceTest extends ResourceTest {
     Assertions.assertEquals("NEW", updatedGameData.status);
     Assertions.assertEquals("QUESTION_MARKED", updatedGameData.rows.get(5).cells.get(2).status);
   }
+
+  @Test
+  public void testThatQuestionMarkIsCleared() throws Exception {
+    final GameData secondGame = createGameSample().get(1);
+    final CellOperationData questionMarkPlacement = new CellOperationData(5, 2, "QUESTION_MARK_PLACEMENT");
+    final CellOperationData clearance = new CellOperationData(5, 2, "CLEARANCE");
+
+    this.mockMvc.perform(patch("/games/" + secondGame.id + "/cell").header("userId", "2")
+                    .contentType(APPLICATION_JSON_VALUE).content(asJson(questionMarkPlacement)))
+            .andExpect(status().isOk());
+
+    final ResultActions updatedGame =
+        this.mockMvc.perform(patch("/games/" + secondGame.id + "/cell").header("userId", "2")
+                        .contentType(APPLICATION_JSON_VALUE).content(asJson(clearance)))
+                .andExpect(status().isOk());
+
+    final GameData updatedGameData = toData(updatedGame, TypeToken.get(GameData.class));
+
+    Assertions.assertEquals("NEW", updatedGameData.status);
+    Assertions.assertEquals("COVERED", updatedGameData.rows.get(5).cells.get(2).status);
+  }
+
 
   private List<GameData> createGameSample() throws Exception {
     final PreferencesData firstPreferencesData = new PreferencesData(6, 6, 8);

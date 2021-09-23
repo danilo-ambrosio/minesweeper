@@ -53,6 +53,11 @@ public class Row {
     updateCell(cell.incrementMine());
   }
 
+  public void clear(final CellCoordinate cellCoordinate) {
+    final Cell cell = cellAt(cellCoordinate.cellIndex());
+    updateCell(cell.clear());
+  }
+
   public Cell uncoverCell(final Board board,
                           final CellCoordinate cellCoordinate,
                           final UncoveringType uncoveringType) {

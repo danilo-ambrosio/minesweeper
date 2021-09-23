@@ -14,9 +14,11 @@ public class CellOperations {
 
   public CellOperations(@Qualifier("uncoveringOperationStrategy") final CellOperationStrategy uncoveringOperation,
                         @Qualifier("flagPlacementOperationStrategy") final CellOperationStrategy flagPlacementOperation,
+                        @Qualifier("clearanceOperationStrategy") final CellOperationStrategy clearanceOperation,
                         @Qualifier("questionMarkPlacementOperationStrategy") final CellOperationStrategy questionMarkPlacementOperation) {
     this.cellOperationStrategies =
-            Map.of(UNCOVERING, uncoveringOperation, FLAG_PLACEMENT, flagPlacementOperation, QUESTION_MARK_PLACEMENT, questionMarkPlacementOperation);
+            Map.of(UNCOVERING, uncoveringOperation, FLAG_PLACEMENT, flagPlacementOperation,
+                    CLEARANCE, clearanceOperation, QUESTION_MARK_PLACEMENT, questionMarkPlacementOperation);
   }
 
   public CellOperationStrategy of(final CellOperation cellOperation) {

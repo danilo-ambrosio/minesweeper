@@ -23,3 +23,5 @@
 - Ports and adapters for User Registry + tests + exception handling (3h)
 
 - CORS + persistence mapping adjustment + Adding test assertions + Starting UI implementation (1h)
+
+- Cell clearance op + tests (30m)

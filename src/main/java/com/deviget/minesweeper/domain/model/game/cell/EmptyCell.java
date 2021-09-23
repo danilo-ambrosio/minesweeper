@@ -44,6 +44,14 @@ public class EmptyCell extends Cell {
   }
 
   @Override
+  public Cell clear() {
+    if(this.isUncovered()) {
+      return this;
+    }
+    return new EmptyCell(index(), CellStatus.COVERED);
+  }
+
+  @Override
   public boolean isEmpty() {
     return true;
   }

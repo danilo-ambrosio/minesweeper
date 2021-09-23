@@ -64,6 +64,11 @@ public class Board {
     }
   }
 
+  void clear(final CellCoordinate cellCoordinate) {
+    final Row row = rowAt(cellCoordinate.rowIndex());
+    row.clear(cellCoordinate);
+  }
+
   private void incrementMineAlert(final CellCoordinate cellCoordinate) {
     final Row row = rowAt(cellCoordinate.rowIndex());
     row.incrementMineAlert(cellCoordinate);

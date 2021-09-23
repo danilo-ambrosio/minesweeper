@@ -34,12 +34,12 @@ public class Game {
 
   @PersistenceConstructor
   private Game(final GameId id,
-              final GameStatus status,
-              final Preferences preferences,
-              final Board board,
-              final long startedOn,
-              final long updatedOn,
-              final UserId userId) {
+               final GameStatus status,
+               final Preferences preferences,
+               final Board board,
+               final long startedOn,
+               final long updatedOn,
+               final UserId userId) {
     this.id = id;
     this.status = status;
     this.preferences = preferences;
@@ -76,6 +76,11 @@ public class Game {
 
   public void placeFlag(final CellCoordinate cellCoordinate) {
     this.board.placeFlag(cellCoordinate);
+    this.updateTimestamp();
+  }
+
+  public void clearCell(final CellCoordinate cellCoordinate) {
+    this.board.clear(cellCoordinate);
     this.updateTimestamp();
   }
 
