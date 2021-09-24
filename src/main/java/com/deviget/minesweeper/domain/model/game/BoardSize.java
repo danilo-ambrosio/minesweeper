@@ -1,9 +1,8 @@
 package com.deviget.minesweeper.domain.model.game;
 
 /**
- * {@code BoardSize} carries the information on
- * how many rows and columns constitute a {@link Board}
- * in a given {@Game}
+ * {@code BoardSize} carries the information on how many rows
+ * and columns constitute a {@link Board} in a given {@link Game}
  *
  * @author Danilo Ambrosio
  */
