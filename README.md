@@ -6,7 +6,7 @@ The only requirement for this application is a [Mongo DB](https://www.mongodb.co
 
 # Running Minesweeper API
 
-Once the database is running and the mentioned environment variable is created, execute the following command to run the application: 
+Once the database is running and the environment variable for the database URI is created, execute the following command to run the application: 
 
 ```
 $ mvn spring-boot:run
