@@ -55,7 +55,7 @@ public class Board {
   void placeQuestionMark(final CellCoordinate cellCoordinate) {
     final Row row = rowAt(cellCoordinate.rowIndex());
     final Cell cell = row.cellAt(cellCoordinate.cellIndex());
-    if(cell.isCovered()) {
+    if(!cell.isUncovered()) {
       row.placeQuestionMark(cellCoordinate);
     }
   }
@@ -63,7 +63,7 @@ public class Board {
   void placeFlag(final CellCoordinate cellCoordinate) {
     final Row row = rowAt(cellCoordinate.rowIndex());
     final Cell cell = row.cellAt(cellCoordinate.cellIndex());
-    if(cell.isCovered()) {
+    if(!cell.isUncovered()) {
       row.placeFlag(cellCoordinate);
     }
   }

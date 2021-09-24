@@ -7,12 +7,12 @@ import org.springframework.data.annotation.PersistenceConstructor;
 public class MineCell extends Cell {
 
   public static MineCell at(final int index, final CellStatus status) {
-    return new MineCell(index, status);
+    return new MineCell(index, CellType.MINE, status);
   }
 
   @PersistenceConstructor
-  private MineCell(final int index, final CellStatus status) {
-    super(index, CellType.MINE, status);
+  private MineCell(final int index, final CellType type, final CellStatus status) {
+    super(index, type, status);
   }
 
   @Override
@@ -25,17 +25,17 @@ public class MineCell extends Cell {
     if(uncoveringType.isPropagation()) {
       return this;
     }
-    return new MineCell(index(), CellStatus.UNCOVERED);
+    return at(index(), CellStatus.UNCOVERED);
   }
 
   @Override
   public Cell placeQuestionMark() {
-    return new MineCell(index(), CellStatus.QUESTION_MARKED);
+    return at(index(), CellStatus.QUESTION_MARKED);
   }
 
   @Override
   public Cell placeFlag() {
-    return new MineCell(index(), CellStatus.FLAGGED);
+    return at(index(), CellStatus.FLAGGED);
   }
 
   @Override
@@ -43,7 +43,7 @@ public class MineCell extends Cell {
     if(this.isUncovered()) {
       return this;
     }
-    return new MineCell(index(), CellStatus.COVERED);
+    return at(index(), CellStatus.COVERED);
   }
 
   @Override

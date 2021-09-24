@@ -13,28 +13,28 @@ public class MineAlertCell extends Cell {
   }
 
   public static MineAlertCell at(final int index, final int mines, final CellStatus status) {
-    return new MineAlertCell(index, mines, status);
+    return new MineAlertCell(index, mines, CellType.MINE_ALERT, status);
   }
 
   @PersistenceConstructor
-  protected MineAlertCell(final int index, final int mines, final CellStatus status) {
-    super(index, CellType.MINE_ALERT, status);
+  private MineAlertCell(final int index, final int mines, final CellType type, final CellStatus status) {
+    super(index, type, status);
     this.mines = mines;
   }
 
   @Override
   public Cell uncover(final UncoveringType uncoveringType) {
-    return new MineAlertCell(index(), mines, CellStatus.UNCOVERED);
+    return at(index(), mines, CellStatus.UNCOVERED);
   }
 
   @Override
   public Cell placeQuestionMark() {
-    return new MineAlertCell(index(), mines, CellStatus.QUESTION_MARKED);
+    return at(index(), mines, CellStatus.QUESTION_MARKED);
   }
 
   @Override
   public Cell placeFlag() {
-    return new MineAlertCell(index(), mines, CellStatus.FLAGGED);
+    return at(index(), mines, CellStatus.FLAGGED);
   }
 
   @Override
@@ -47,7 +47,7 @@ public class MineAlertCell extends Cell {
     if(this.isUncovered()) {
       return this;
     }
-    return new MineAlertCell(index(), mines, CellStatus.COVERED);
+    return at(index(), mines, CellStatus.COVERED);
 }
 
   @Override
