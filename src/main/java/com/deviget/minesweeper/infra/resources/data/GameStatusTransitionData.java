@@ -3,10 +3,16 @@ package com.deviget.minesweeper.infra.resources.data;
 public class GameStatusTransitionData {
 
   public final String reason;
-  public final long timeElapsed;
 
-  public GameStatusTransitionData(final String reason, final long timeElapsed) {
+  public static GameStatusTransitionData from(final String reason) {
+    return new GameStatusTransitionData(reason);
+  }
+
+  public GameStatusTransitionData() {
+    this("");
+  }
+
+  private GameStatusTransitionData(final String reason) {
     this.reason = reason;
-    this.timeElapsed = timeElapsed;
   }
 }

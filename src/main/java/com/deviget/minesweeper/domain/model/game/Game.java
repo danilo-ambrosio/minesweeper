@@ -9,6 +9,7 @@ import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,12 +32,13 @@ public class Game {
   private final Board board;
   private GameStatus status;
   private final long startedOn;
+  private long lastResumedOn;
   private long timeElapsed;
 
   public static Game configure(final Preferences preferences,
                                final UserId userId) {
-    return new Game(GameId.create(), userId, GameStatus.NEW, preferences,
-            Board.empty(preferences), Game.currentTimeMillis(), 0);
+    final long now = Game.currentTimeMillis();
+    return new Game(GameId.create(), userId, GameStatus.NEW, preferences, Board.empty(preferences), now, now, 0);
   }
 
   @PersistenceConstructor
@@ -46,6 +48,7 @@ public class Game {
                final Preferences preferences,
                final Board board,
                final long startedOn,
+               final long lastResumedOn,
                final long timeElapsed) {
     this.id = id;
     this.userId = userId;
@@ -53,10 +56,11 @@ public class Game {
     this.preferences = preferences;
     this.board = board;
     this.startedOn = startedOn;
+    this.lastResumedOn = lastResumedOn;
     this.timeElapsed = timeElapsed;
   }
 
-  public void uncoverCell(final CellCoordinate cellCoordinate, final long timeElapsed) {
+  public void uncoverCell(final CellCoordinate cellCoordinate) {
     if(isNew()) {
       this.status = GameStatus.ONGOING;
       this.board.placeMines(resolveMineCoordinates(cellCoordinate));
@@ -76,31 +80,26 @@ public class Game {
     if(isOver()) {
       this.board.handleGameEnding();
     }
-
-    this.elapseTime(timeElapsed);
   }
 
-  public void placeQuestionMark(final CellCoordinate cellCoordinate, final long timeElapsed) {
+  public void placeQuestionMark(final CellCoordinate cellCoordinate) {
     this.board.placeQuestionMark(cellCoordinate);
-    this.elapseTime(timeElapsed);
   }
 
-  public void placeFlag(final CellCoordinate cellCoordinate, final long timeElapsed) {
+  public void placeFlag(final CellCoordinate cellCoordinate) {
     this.board.placeFlag(cellCoordinate);
-    this.elapseTime(timeElapsed);
   }
 
-  public void clearCell(final CellCoordinate cellCoordinate, final long timeElapsed) {
+  public void clearCell(final CellCoordinate cellCoordinate) {
     this.board.clear(cellCoordinate);
-    this.elapseTime(timeElapsed);
   }
 
-  public void pause(final long timeElapsed) {
+  public void pause() {
     if(!isNew() && !isOngoing()) {
       throw new IllegalStateException("Unable to pause because game is " + this.status);
     }
     this.status = GameStatus.PAUSED;
-    elapseTime(timeElapsed);
+    elapseTime();
   }
 
   public void resume() {
@@ -108,6 +107,7 @@ public class Game {
       throw new IllegalStateException("Unable to resume because game is not paused");
     }
     this.status = GameStatus.ONGOING;
+    this.lastResumedOn = currentTimeMillis();
   }
 
   private Set<CellCoordinate> resolveMineCoordinates(final CellCoordinate protectedCoordinate) {
@@ -125,8 +125,8 @@ public class Game {
     return mineCoordinates;
   }
 
-  private void elapseTime(final long partial) {
-    this.timeElapsed += partial;
+  private void elapseTime() {
+    this.timeElapsed += Instant.ofEpochMilli(lastResumedOn).until(Instant.now(), ChronoUnit.SECONDS);
   }
 
   public GameId id() {

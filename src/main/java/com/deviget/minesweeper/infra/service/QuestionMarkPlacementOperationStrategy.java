@@ -16,7 +16,7 @@ public class QuestionMarkPlacementOperationStrategy implements CellOperationStra
   @Override
   public Game perform(final GameId gameId, final UserId userId, final CellOperation operation) {
     final Game existingGame = gameRepository.findByIdAndUserId(gameId, userId);
-    existingGame.placeQuestionMark(operation.cellCoordinate, operation.timeElapsed);
+    existingGame.placeQuestionMark(operation.cellCoordinate);
     return gameRepository.save(existingGame);
   }
 

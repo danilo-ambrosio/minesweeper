@@ -42,7 +42,7 @@ public class GameResource {
                                                @RequestBody final GameStatusTransitionData statusTransitionData,
                                                final UserId userId) {
     final GameStatusTransition statusTransition =
-            GameStatusTransition.becauseOf(statusTransitionData.reason, statusTransitionData.timeElapsed);
+            GameStatusTransition.becauseOf(statusTransitionData.reason);
 
     final Game existingGame = gameService.changeStatus(GameId.of(id), userId, statusTransition);
     return ResponseEntity.ok(GameData.from(existingGame));
@@ -53,8 +53,7 @@ public class GameResource {
                                                        @RequestBody final CellOperationData cellOperationData,
                                                        final UserId userId) {
     final CellOperation cellOperation =
-            CellOperation.from(cellOperationData.rowIndex, cellOperationData.cellIndex,
-                    cellOperationData.type, cellOperationData.timeElapsed);
+            CellOperation.from(cellOperationData.rowIndex, cellOperationData.cellIndex, cellOperationData.type);
 
     final Game updatedGame = gameService.performCellOperation(GameId.of(id), userId, cellOperation);
 

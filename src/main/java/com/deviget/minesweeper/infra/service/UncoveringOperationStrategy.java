@@ -14,9 +14,9 @@ public class UncoveringOperationStrategy implements CellOperationStrategy {
   private GameRepository gameRepository;
 
   @Override
-  public Game perform(final GameId gameId, final UserId userId,final CellOperation operation) {
+  public Game perform(final GameId gameId, final UserId userId, final CellOperation operation) {
     final Game existingGame = gameRepository.findByIdAndUserId(gameId, userId);
-    existingGame.uncoverCell(operation.cellCoordinate, operation.timeElapsed);
+    existingGame.uncoverCell(operation.cellCoordinate);
     return gameRepository.save(existingGame);
   }
 

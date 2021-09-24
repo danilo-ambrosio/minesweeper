@@ -44,7 +44,7 @@ public class GameResourceTest extends ResourceTest {
     final GameData firstGame = createGameSample().get(0);
 
     final GameStatusTransitionData gamePreservation =
-            new GameStatusTransitionData("GAME_PRESERVATION", 5000);
+            GameStatusTransitionData.from("GAME_PRESERVATION");
 
     final ResultActions pausedGame =
             this.mockMvc.perform(patch("/games/" + firstGame.id + "/status").header("userId", "2")
@@ -53,7 +53,6 @@ public class GameResourceTest extends ResourceTest {
     final GameData pausedGameData = toData(pausedGame, TypeToken.get(GameData.class));
 
     Assertions.assertEquals("PAUSED", pausedGameData.status);
-    Assertions.assertEquals(pausedGameData.timeElapsed - firstGame.timeElapsed, 5000);
   }
 
   @Test
@@ -61,7 +60,7 @@ public class GameResourceTest extends ResourceTest {
     final GameData thirdGame = createGameSample().get(2);
 
     final GameStatusTransitionData gameContinuation =
-            new GameStatusTransitionData("GAME_CONTINUATION", 0);
+            GameStatusTransitionData.from("GAME_CONTINUATION");
 
     final ResultActions resumedGame =
             this.mockMvc.perform(patch("/games/" + thirdGame.id + "/status").header("userId", "3")
@@ -86,7 +85,6 @@ public class GameResourceTest extends ResourceTest {
     Assertions.assertEquals("ONGOING", updatedGameData.status);
     Assertions.assertEquals("UNCOVERED", updatedGameData.rows.get(8).cells.get(3).status);
     Assertions.assertTrue(updatedGameData.rows.stream().flatMap(row -> row.cells.stream()).filter(cell -> cell.type.equals("MINE_ALERT")).allMatch(cell -> cell.mines > 0));
-    Assertions.assertEquals(updatedGameData.timeElapsed - secondGame.timeElapsed, 4000);
   }
 
   @Test
@@ -104,7 +102,6 @@ public class GameResourceTest extends ResourceTest {
 
     Assertions.assertEquals("NEW", updatedGameData.status);
     Assertions.assertEquals("FLAGGED", updatedGameData.rows.get(4).cells.get(0).status);
-    Assertions.assertEquals(updatedGameData.timeElapsed - secondGame.timeElapsed, 12000);
   }
 
   @Test
@@ -122,7 +119,6 @@ public class GameResourceTest extends ResourceTest {
 
     Assertions.assertEquals("NEW", updatedGameData.status);
     Assertions.assertEquals("QUESTION_MARKED", updatedGameData.rows.get(5).cells.get(2).status);
-    Assertions.assertEquals(updatedGameData.timeElapsed - secondGame.timeElapsed, 20000);
   }
 
   @Test
@@ -144,7 +140,6 @@ public class GameResourceTest extends ResourceTest {
 
     Assertions.assertEquals("NEW", updatedGameData.status);
     Assertions.assertEquals("COVERED", updatedGameData.rows.get(5).cells.get(2).status);
-    Assertions.assertEquals(updatedGameData.timeElapsed - secondGame.timeElapsed, 9000);
   }
 
   @Test
@@ -191,7 +186,7 @@ public class GameResourceTest extends ResourceTest {
             toData(thirdGame, TypeToken.get(GameData.class));
 
     this.mockMvc.perform(patch("/games/" + thirdGameData.id + "/status").header("userId", "3")
-            .contentType(APPLICATION_JSON_VALUE).content(asJson(new GameStatusTransitionData("GAME_PRESERVATION", 5000))))
+            .contentType(APPLICATION_JSON_VALUE).content(asJson(GameStatusTransitionData.from("GAME_PRESERVATION"))))
             .andExpect(status().isOk());
 
     return List.of(toData(firstGame, TypeToken.get(GameData.class)),

@@ -16,7 +16,7 @@ public class FlagPlacementOperationStrategy implements CellOperationStrategy {
   @Override
   public Game perform(final GameId gameId, final UserId userId, final CellOperation operation) {
     final Game existingGame = gameRepository.findByIdAndUserId(gameId, userId);
-    existingGame.placeFlag(operation.cellCoordinate, operation.timeElapsed);
+    existingGame.placeFlag(operation.cellCoordinate);
     return gameRepository.save(existingGame);
   }
 }

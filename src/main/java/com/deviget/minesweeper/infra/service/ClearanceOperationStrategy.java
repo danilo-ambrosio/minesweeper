@@ -18,7 +18,7 @@ public class ClearanceOperationStrategy implements CellOperationStrategy {
                       final UserId userId,
                       final CellOperation operation) {
     final Game existingGame = gameRepository.findByIdAndUserId(gameId, userId);
-    existingGame.clearCell(operation.cellCoordinate, operation.timeElapsed);
+    existingGame.clearCell(operation.cellCoordinate);
     return gameRepository.save(existingGame);
   }
 

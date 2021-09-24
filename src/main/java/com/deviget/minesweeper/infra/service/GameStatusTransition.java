@@ -3,16 +3,13 @@ package com.deviget.minesweeper.infra.service;
 public class GameStatusTransition {
 
   public final Reason reason;
-  public final long timeElapsed;
 
-  public static GameStatusTransition becauseOf(final String reason,
-                                               final long timeElapsed) {
-    return new GameStatusTransition(Reason.valueOf(reason), timeElapsed);
+  public static GameStatusTransition becauseOf(final String reason) {
+    return new GameStatusTransition(Reason.valueOf(reason));
   }
 
-  public GameStatusTransition(final Reason reason, final long timeElapsed) {
+  public GameStatusTransition(final Reason reason) {
     this.reason = reason;
-    this.timeElapsed = timeElapsed;
   }
 
   public enum Reason {

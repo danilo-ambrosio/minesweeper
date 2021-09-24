@@ -16,7 +16,7 @@ public class GamePreservationStrategy implements GameStatusTransitionStrategy{
   @Override
   public Game changeStatus(final GameId id, final UserId userId, final GameStatusTransition statusTransition) {
     final Game existingGame = gameRepository.findByIdAndUserId(id, userId);
-    existingGame.pause(statusTransition.timeElapsed);
+    existingGame.pause();
     return gameRepository.save(existingGame);
   }
 
