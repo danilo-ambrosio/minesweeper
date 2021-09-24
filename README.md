@@ -30,7 +30,7 @@ Payload example:
 }
 ```
 
-## Changing Minesweeper Game Status
+## Changing Game Status
 
 * PATCH /games/{gameId}/status
   
