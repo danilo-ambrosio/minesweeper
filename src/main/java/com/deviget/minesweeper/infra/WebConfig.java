@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -23,7 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addCorsMappings(final CorsRegistry registry) {
-    registry.addMapping("/**").allowedOrigins(allowedOrigins);
+    registry.addMapping("/**").allowedOrigins(allowedOrigins)
+            .allowedMethods(HttpMethod.POST.name(), HttpMethod.PATCH.name(), HttpMethod.GET.name());
   }
 
   @Bean
