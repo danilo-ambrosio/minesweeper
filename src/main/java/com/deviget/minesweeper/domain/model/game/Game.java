@@ -110,14 +110,24 @@ public class Game {
     this.lastResumedOn = currentTimeMillis();
   }
 
-  private Set<CellCoordinate> resolveMineCoordinates(final CellCoordinate protectedCoordinate) {
+  /**
+   * Randomly resolve the mine coordinates. In order to avoid an early defeat, the
+   * mine coordinates are only resolved after the player uncovers the first cell.
+   * So, considering the first uncovered cell, this method will set the mine
+   * coordinates skipping the first uncovered cell coordinate.
+   *
+   * @param firstUncoveredCell coordinates referring the first uncovered cell
+   *
+   * @return a collection containing the mine coordinates
+   */
+  private Set<CellCoordinate> resolveMineCoordinates(final CellCoordinate firstUncoveredCell) {
     final Set<CellCoordinate> mineCoordinates = new HashSet<>();
 
     while(mineCoordinates.size() < preferences.numberOfMines()) {
       final CellCoordinate randomCoordinate =
               CellCoordinate.random(preferences.boardSize());
 
-      if(!protectedCoordinate.equals(randomCoordinate)) {
+      if(!firstUncoveredCell.equals(randomCoordinate)) {
         mineCoordinates.add(randomCoordinate);
       }
     }
