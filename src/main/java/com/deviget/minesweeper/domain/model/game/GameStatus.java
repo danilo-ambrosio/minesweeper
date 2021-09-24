@@ -7,6 +7,13 @@
 
 package com.deviget.minesweeper.domain.model.game;
 
+/**
+ * {@code GameStatus} describes the {@link Game} evolution caused
+ * by user interactions. Based on {@code GameStatus}, {@link Game}
+ * is able to safely change its state and ensure invariants.
+ *
+ * @author Danilo Ambrosio
+ */
 public enum GameStatus {
   NEW,
   ONGOING,

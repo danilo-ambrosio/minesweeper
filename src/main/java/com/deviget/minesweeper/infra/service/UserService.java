@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * {@code UserService} is responsible for providing a coarse-grained application
+ * service regarding {@link User}.
+ *
+ * @author Danilo Ambrosio
+ */
 @Service
 public class UserService {
 

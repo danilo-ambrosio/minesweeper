@@ -7,6 +7,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * {@code AdjacentCellCoordinates} retrieves the coordinates of cells
+ * that are adjacent to a given cell.
+ *
+ * @author Danilo Ambrosio
+ */
 public class AdjacentCellCoordinates {
 
   private final List<CellNavigationResolver> resolvers;

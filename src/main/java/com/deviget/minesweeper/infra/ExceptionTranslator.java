@@ -8,8 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * {@code ExceptionTranslator} translate exceptions to HTTP responses.
+ *
+ * @author Danilo Ambrosio
+ */
 @ControllerAdvice
-public class ExceptionResolver {
+public class ExceptionTranslator {
 
   @ExceptionHandler(value = AuthenticationException.class)
   public ResponseEntity<Object> resolveAuthenticationException() {

@@ -4,6 +4,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * {@code User} contains the user credentials for identity and access.
+ *
+ * @author Danilo Ambrosio
+ */
 @Document(collection = "user")
 public class User {
 

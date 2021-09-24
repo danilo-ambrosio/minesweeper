@@ -3,6 +3,13 @@ package com.deviget.minesweeper.domain.model.game.cell;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.springframework.data.annotation.PersistenceConstructor;
 
+/**
+ * {@code EmptyCell} does contain neither mine nor mine alert
+ * and, if uncovered, causes adjacent cells to be uncovered
+ * as long as it does not contain mines.
+ *
+ * @author Danilo Ambrosio
+ */
 @BsonDiscriminator("emptyCell")
 public class EmptyCell extends Cell {
 

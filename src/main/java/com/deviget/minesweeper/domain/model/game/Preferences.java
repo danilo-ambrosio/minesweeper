@@ -2,6 +2,13 @@ package com.deviget.minesweeper.domain.model.game;
 
 import org.springframework.data.annotation.PersistenceConstructor;
 
+/**
+ * {@code Preferences} allow users to control the difficulty
+ * of the Minesweeper game by defining how many rows, columns
+ * and mines are involved in a {@link Game}.
+ *
+ * @author Danilo Ambrosio
+ */
 public class Preferences {
 
   private final int rows;

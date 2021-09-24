@@ -8,6 +8,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
+/**
+ * {@code GameRepository} represents the repository that deals
+ * with persistence and query operations on {@link Game}
+ *
+ * @author Danilo Ambrosio
+ */
 public interface GameRepository extends MongoRepository<Game, GameId> {
 
   Game findByIdAndUserId(final GameId gameId, final UserId userId);

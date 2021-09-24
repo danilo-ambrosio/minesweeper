@@ -11,6 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * {@code GameService} is responsible for providing a coarse-grained application
+ * service regarding {@link Game}.
+ *
+ * @author Danilo Ambrosio
+ */
 @Service
 public class GameService {
 

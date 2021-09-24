@@ -1,5 +1,11 @@
 package com.deviget.minesweeper.domain.model.game.cell;
 
+/**
+ * {@code UncoveringType} classifies the origin of
+ * an uncovering request.
+ *
+ * @author Danilo Ambrosio
+ */
 public enum UncoveringType {
   USER_REQUEST,
   GAME_ENDING,
@@ -7,10 +13,6 @@ public enum UncoveringType {
 
   public boolean isPropagation() {
     return equals(PROPAGATION);
-  }
-
-  public boolean isUserRequest() {
-    return equals(USER_REQUEST);
   }
 
   public boolean isGameEnding() {

@@ -3,6 +3,11 @@ package com.deviget.minesweeper.domain.model.game.cell;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.springframework.data.annotation.PersistenceConstructor;
 
+/**
+ * {@code MineAlertCell} informs the total of mines that surround a cell.
+ *
+ * @author Danilo Ambrosio
+ */
 @BsonDiscriminator("mineAlertCell")
 public class MineAlertCell extends Cell {
 

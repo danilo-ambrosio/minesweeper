@@ -5,6 +5,12 @@ import com.deviget.minesweeper.domain.model.game.BoardSize;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * {@code CellCoordinate} is the combination of the row index and
+ * the cell index that gives the exact logical reference to {@link Cell}.
+ *
+ * @author Danilo Ambrosio
+ */
 public class CellCoordinate {
 
   public final int rowIndex;

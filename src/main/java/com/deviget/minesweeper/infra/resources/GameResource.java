@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * {@code GameResource} exposes {@link Game} operations via REST.
+ *
+ * @author Danilo Ambrosio
+ */
 @RestController
 @RequestMapping("/games")
 public class GameResource {

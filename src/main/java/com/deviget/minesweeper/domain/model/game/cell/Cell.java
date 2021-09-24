@@ -1,7 +1,17 @@
 package com.deviget.minesweeper.domain.model.game.cell;
 
+import com.deviget.minesweeper.domain.model.game.Game;
+
 import java.util.Objects;
 
+/**
+ * {@code Cell} is the basic unit of a Minesweeper game
+ * and it can be {@link EmptyCell}, {@link MineCell} or
+ * {@link MineAlertCell}. Its status directly changes
+ * by the user actions during the {@link Game}.
+ *
+ * @author Danilo Ambrosio
+ */
 public abstract class Cell implements Comparable<Cell> {
 
   private final int index;

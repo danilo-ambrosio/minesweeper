@@ -1,8 +1,15 @@
 package com.deviget.minesweeper.domain.model.game.cell;
 
+import com.deviget.minesweeper.domain.model.game.Game;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.springframework.data.annotation.PersistenceConstructor;
 
+/**
+ * {@code MineCell} contains a mine and the {@link Game}
+ * when it's directly uncovered by the user.
+ *
+ * @author Danilo Ambrosio
+ */
 @BsonDiscriminator("mineCell")
 public class MineCell extends Cell {
 

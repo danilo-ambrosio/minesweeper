@@ -3,6 +3,11 @@ package com.deviget.minesweeper.domain.model.game;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * {@code GameId} contains a value that identifies a {@link Game}.
+ *
+ * @author Danilo Ambrosio
+ */
 public class GameId {
 
   private final String value;

@@ -13,6 +13,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * {@code Board} deals with the Minesweeper rules that depends on
+ * the board size. Once it has the state information of all rows
+ * and cells available on a given {@link Game}, it is able to
+ * support the aggregate root to consistently update {@link Row}
+ * and {@link Cell} data.
+ *
+ * @author Danilo Ambrosio
+ */
 public class Board {
 
   private final BoardSize boardSize;

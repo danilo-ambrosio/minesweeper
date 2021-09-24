@@ -5,6 +5,11 @@ import org.springframework.data.annotation.PersistenceConstructor;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * {@code UserId} contains a value that identifies a {@link User}.
+ *
+ * @author Danilo Ambrosio
+ */
 public class UserId {
 
   private final String value;

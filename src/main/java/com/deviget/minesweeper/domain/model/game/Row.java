@@ -13,6 +13,13 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * {@code Row} cooperate with {@link Cell} mainly by
+ * handling operations that affect more than one
+ * {@link Cell}.
+ *
+ * @author Danilo Ambrosio
+ */
 public class Row {
 
   private final int index;
@@ -32,33 +39,33 @@ public class Row {
     this.cells.addAll(cells);
   }
 
-  public void placeMine(final int cellIndex) {
+  void placeMine(final int cellIndex) {
     final Cell existingCell = cellAt(cellIndex);
     final Cell mine = Cell.mineAt(cellIndex, existingCell.status());
     updateCell(mine);
   }
 
-  public void placeFlag(CellCoordinate cellCoordinate) {
+  void placeFlag(CellCoordinate cellCoordinate) {
     final Cell cell = cellAt(cellCoordinate.cellIndex());
     updateCell(cell.placeFlag());
   }
 
-  public void placeQuestionMark(final CellCoordinate cellCoordinate) {
+  void placeQuestionMark(final CellCoordinate cellCoordinate) {
     final Cell cell = cellAt(cellCoordinate.cellIndex());
     updateCell(cell.placeQuestionMark());
   }
 
-  public void incrementMineAlert(final CellCoordinate cellCoordinate) {
+  void incrementMineAlert(final CellCoordinate cellCoordinate) {
     final Cell cell = cellAt(cellCoordinate.cellIndex());
     updateCell(cell.incrementMine());
   }
 
-  public void clear(final CellCoordinate cellCoordinate) {
+  void clear(final CellCoordinate cellCoordinate) {
     final Cell cell = cellAt(cellCoordinate.cellIndex());
     updateCell(cell.clear());
   }
 
-  public Cell uncoverCell(final Board board,
+  Cell uncoverCell(final Board board,
                           final CellCoordinate cellCoordinate,
                           final UncoveringType uncoveringType) {
     return uncoverCell(board, cellAt(cellCoordinate.cellIndex()), uncoveringType);
@@ -80,7 +87,6 @@ public class Row {
 
     if(!uncoveringType.isGameEnding()) {
       updateCell(uncoveredCell);
-
 
       if(uncoveredCell.shouldPropagateUncovering()) {
         AdjacentCellCoordinates.resolve(board.size(), CellCoordinate.with(index, cell.index()))

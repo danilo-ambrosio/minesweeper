@@ -13,6 +13,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * {@code Game} is the aggregate root that exposes the domain
+ * behavior of a Minesweeper game to the outer application layers.
+ * Its main responsibility is to manage the {@link GameStatus} flow
+ * as the {@link Cell} is changed.
+ *
+ * @author Danilo Ambrosio
+ */
 @Document(collection = "game")
 public class Game {
 
