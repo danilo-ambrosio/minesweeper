@@ -22,7 +22,7 @@ public class GameTest {
     Assertions.assertNotNull(game.id());
     Assertions.assertEquals(userId, game.userId());
     Assertions.assertEquals(GameStatus.NEW, game.status());
-    Assertions.assertNotNull(game.startedOn());
+    Assertions.assertTrue(game.startedOn() > 0);
     Assertions.assertEquals(4, game.rows().size());
     Assertions.assertTrue(game.rows().stream().allMatch(row -> row.cells().size() == 6));
     Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(cell -> cell.isEmpty() && cell.isCovered()));
@@ -39,7 +39,7 @@ public class GameTest {
   public void testThatGameIsNotPaused()  {
     final Game game = Game.configure(Preferences.with(4, 6, 10), UserId.create());
     game.pause();
-    Assertions.assertThrows(IllegalStateException.class, () -> game.pause());
+    Assertions.assertThrows(IllegalStateException.class, game::pause);
   }
 
   @Test
@@ -136,8 +136,8 @@ public class GameTest {
   public void testThatGameStatusIsWon() {
     final Game game = Game.configure(Preferences.with(4, 6, 2), UserId.create());
     game.uncoverCell(CellCoordinate.with(2, 3));
-    findCellCoordinates(game, CellType.EMPTY).forEach(coordinate -> game.uncoverCell(coordinate));
-    findCellCoordinates(game, CellType.MINE_ALERT).forEach(coordinate -> game.uncoverCell(coordinate));
+    findCellCoordinates(game, CellType.EMPTY).forEach(game::uncoverCell);
+    findCellCoordinates(game, CellType.MINE_ALERT).forEach(game::uncoverCell);
     Assertions.assertEquals(GameStatus.WON, game.status());
     Assertions.assertTrue(game.rows().stream().flatMap(row -> row.cells().stream()).allMatch(Cell::isUncovered));
   }
