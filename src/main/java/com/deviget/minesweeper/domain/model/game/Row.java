@@ -3,7 +3,6 @@ package com.deviget.minesweeper.domain.model.game;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
-import com.deviget.minesweeper.domain.model.game.cell.navigation.AdjacentCellCoordinates;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.PersistenceConstructor;
 
@@ -26,11 +25,11 @@ public class Row {
   @BsonProperty(useDiscriminator = true)
   private final Set<Cell> cells = new TreeSet<>();
 
-  public static Row empty(final int index, final int numberOfCells) {
+  public static Row empty(final int rowIndex, final int numberOfCells) {
     final Set<Cell> emptyCells =
             IntStream.range(0, numberOfCells).mapToObj(Cell::emptyAt).collect(Collectors.toSet());
 
-    return new Row(index, emptyCells);
+    return new Row(rowIndex, emptyCells);
   }
 
   @PersistenceConstructor
@@ -89,7 +88,7 @@ public class Row {
       updateCell(uncoveredCell);
 
       if(uncoveredCell.shouldPropagateUncovering()) {
-        AdjacentCellCoordinates.resolve(board.size(), CellCoordinate.with(index, cell.index()))
+        CellCoordinate.with(index, cell.index()).resolveAdjacent(board.size())
                 .forEach(adjacentCoordinate -> board.uncoverCell(adjacentCoordinate, UncoveringType.PROPAGATION));
       }
     }

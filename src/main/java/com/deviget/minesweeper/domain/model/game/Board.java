@@ -3,7 +3,6 @@ package com.deviget.minesweeper.domain.model.game;
 import com.deviget.minesweeper.domain.model.game.cell.Cell;
 import com.deviget.minesweeper.domain.model.game.cell.CellCoordinate;
 import com.deviget.minesweeper.domain.model.game.cell.UncoveringType;
-import com.deviget.minesweeper.domain.model.game.cell.navigation.AdjacentCellCoordinates;
 import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class Board {
   void placeMines(final Set<CellCoordinate> mineCoordinates) {
     mineCoordinates.forEach(mineCoordinate -> {
       this.rowAt(mineCoordinate.rowIndex()).placeMine(mineCoordinate.cellIndex());
-      AdjacentCellCoordinates.resolve(boardSize, mineCoordinate).forEach(this::incrementMineAlert);
+      mineCoordinate.resolveAdjacent(boardSize).forEach(this::incrementMineAlert);
     });
   }
 
