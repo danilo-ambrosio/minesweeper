@@ -38,8 +38,7 @@ Payload example:
 
 ```
 {
-   "reason":"GAME_PRESERVATION",
-   "timeElapsed":5000
+   "reason":"GAME_PRESERVATION"
 }
 ```
 
@@ -53,7 +52,6 @@ Payload example:
 {
    "rowIndex":8,
    "cellIndex":3,
-   "timeElapsed":4000,
    "type":"UNCOVERING"
 }
 ```
@@ -69,7 +67,7 @@ Response example:
    "id":"c70593af-34aa-4f91-b2e8-052e39a7e2d1",
    "status":"PAUSED",
    "startedOn":1632447451304,
-   "timeElapsed":5000,
+   "timeElapsed":5,
    "rows":[
       {
          "index":0,
