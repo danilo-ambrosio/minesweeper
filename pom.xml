@@ -8,7 +8,7 @@
 		<version>2.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.deviget</groupId>
+	<groupId>br.com.plena</groupId>
 	<artifactId>minesweeper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Minesweeper Service</name>
